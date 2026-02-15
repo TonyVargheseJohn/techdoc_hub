@@ -5,7 +5,11 @@ from guest.models import *
 
 
 def home(request):
-    return render(request,"user/Home.html")
+    if 'uid' in request.session:
+        user = User.objects.get(id=request.session['uid'])
+        return render(request,"user/Home.html", {'user': user})
+    else:
+        return redirect("guest:login")
 
 
 def myprofile(request):
@@ -16,11 +20,11 @@ def myprofile(request):
 def editprofile(request):
     data = User.objects.get(id=request.session['uid'])
     if request.method == "POST":
-        data.name = request.POST.get('txtname')
-        data.contact = request.POST.get('txtcontact')
-        data.employeid = request.POST.get('txtemployeid')
-        data.email = request.POST.get('txtemail')
+        data.name = request.POST.get('name')
+        data.contact = request.POST.get('contact')
+        data.employeid = request.POST.get('employeid')
+        data.email = request.POST.get('email')
         data.save()
-        return redirect("user:myprofile")
+        return redirect("webuser:myprofile")
     else:
-        return render(request, "webuser/Editprofile.html", {'data': data})
+        return render(request, "user/Editprofile.html", {'data': data})
