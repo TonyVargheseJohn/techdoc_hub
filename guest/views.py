@@ -37,43 +37,49 @@ def user_registration(request):
 from django.shortcuts import render, redirect
 from .models import User
 
-def user_login(request):
+def login(request):
     if request.method == "POST":
-        email = request.POST.get('email')
-        password = request.POST.get('password')
 
-        user_count = User.objects.filter(email=email, password=password).count()
+        usercount = User.objects.filter(
+            email=request.POST.get('txtemail'),
+            password=request.POST.get('txtpassword')
+        ).count()
 
-        if user_count > 0:
-            user = User.objects.get(email=email, password=password)
+        admincount = Admin.objects.filter(
+            username=request.POST.get('txtemail'),
+            password=request.POST.get('txtpassword')
+        ).count()
+
+
+        if usercount > 0:
+            user = User.objects.get(
+                email=request.POST.get('txtemail'),
+                password=request.POST.get('txtpassword')
+            )
             request.session['uid'] = user.id
-            return redirect('webuser:home')   # change if needed
+            return redirect("webuser:home")
+
+
+        elif admincount > 0:
+            admin = Admin.objects.get(
+                username=request.POST.get('txtemail'),
+                password=request.POST.get('txtpassword')
+            )
+            request.session['aid'] = admin.id
+            return redirect("wadmin:Home")
+
+
         else:
             return render(request, "Guest/Login.html", {
-                "error": "Invalid email or password"
+                "error": "Invalid email/username or password"
             })
 
-    return render(request, "Guest/Login.html")
+    else:
+        return render(request, "Guest/Login.html")
 
 
 def home(request):
     return render(request,"Guest/Home.html")
 
 
-def admin_login(request):
-    if request.method == "POST":
-        username = request.POST.get('username')
-        password = request.POST.get('password')
 
-        admin_count = Admin.objects.filter(username=username, password=password).count()
-
-        if admin_count > 0:
-            admin = Admin.objects.get(username=username, password=password)
-            request.session['aid'] = admin.id
-            return redirect('wadmin:Home')   # change url name if needed
-        else:
-            return render(request, "Guest/Login.html", {
-                "error": "Invalid username or password"
-            })
-
-    return render(request, "Guest/Login.html")
