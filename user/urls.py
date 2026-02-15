@@ -1,7 +1,7 @@
 from django.urls import path
 from guest import views
-app_name="user"
+app_name="webweuser"
 urlpatterns = [
-    path('Home/', views.home,name="login"),
+    path('Home/', views.home,name="home"),
     
 ]

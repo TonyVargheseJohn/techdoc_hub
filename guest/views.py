@@ -47,7 +47,7 @@ def user_login(request):
         if user_count > 0:
             user = User.objects.get(email=email, password=password)
             request.session['uid'] = user.id
-            return redirect('user:userhome')   # change if needed
+            return redirect('webuser:home')   # change if needed
         else:
             return render(request, "Guest/Login.html", {
                 "error": "Invalid email or password"
@@ -58,3 +58,22 @@ def user_login(request):
 
 def home(request):
     return render(request,"Guest/Home.html")
+
+
+def admin_login(request):
+    if request.method == "POST":
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        admin_count = Admin.objects.filter(username=username, password=password).count()
+
+        if admin_count > 0:
+            admin = Admin.objects.get(username=username, password=password)
+            request.session['aid'] = admin.id
+            return redirect('admin:adminhome')   # change url name if needed
+        else:
+            return render(request, "Guest/Login.html", {
+                "error": "Invalid username or password"
+            })
+
+    return render(request, "Guest/Login.html")
