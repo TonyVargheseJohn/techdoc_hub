@@ -41,20 +41,20 @@ def login(request):
     if request.method == "POST":
 
         usercount = User.objects.filter(
-            email=request.POST.get('txtemail'),
-            password=request.POST.get('txtpassword')
+            email=request.POST.get('email'),
+            password=request.POST.get('password')
         ).count()
 
         admincount = Admin.objects.filter(
-            username=request.POST.get('txtemail'),
-            password=request.POST.get('txtpassword')
+            username=request.POST.get('email'),
+            password=request.POST.get('password')
         ).count()
 
 
         if usercount > 0:
             user = User.objects.get(
-                email=request.POST.get('txtemail'),
-                password=request.POST.get('txtpassword')
+                email=request.POST.get('email'),
+                password=request.POST.get('password')
             )
             request.session['uid'] = user.id
             return redirect("webuser:home")
@@ -62,8 +62,8 @@ def login(request):
 
         elif admincount > 0:
             admin = Admin.objects.get(
-                username=request.POST.get('txtemail'),
-                password=request.POST.get('txtpassword')
+                username=request.POST.get('email'),
+                password=request.POST.get('password')
             )
             request.session['aid'] = admin.id
             return redirect("wadmin:Home")
