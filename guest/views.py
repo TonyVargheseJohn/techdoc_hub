@@ -29,7 +29,7 @@ def user_registration(request):
         user.save()
 
         messages.success(request, "User registered successfully")
-        return redirect('user_registration')
+        return redirect('guest:user_registration')
 
     return render(request,'Guest/Newuser.html')
 
@@ -70,7 +70,7 @@ def admin_login(request):
         if admin_count > 0:
             admin = Admin.objects.get(username=username, password=password)
             request.session['aid'] = admin.id
-            return redirect('admin:adminhome')   # change url name if needed
+            return redirect('wadmin:Home')   # change url name if needed
         else:
             return render(request, "Guest/Login.html", {
                 "error": "Invalid username or password"

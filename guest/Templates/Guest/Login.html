@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,7 +47,7 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 1px, transparent 1px);
             background-size: 50px 50px;
             animation: moveBackground 20s linear infinite;
             z-index: 0;
@@ -56,6 +57,7 @@
             0% {
                 transform: translate(0, 0);
             }
+
             100% {
                 transform: translate(50px, 50px);
             }
@@ -95,9 +97,12 @@
         }
 
         @keyframes float {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0) rotate(0deg);
             }
+
             50% {
                 transform: translateY(-30px) rotate(180deg);
             }
@@ -121,6 +126,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -162,9 +168,12 @@
         }
 
         @keyframes bounce {
-            0%, 100% {
+
+            0%,
+            100% {
                 transform: translateY(0);
             }
+
             50% {
                 transform: translateY(-10px);
             }
@@ -203,16 +212,28 @@
             animation-fill-mode: both;
         }
 
-        .feature-item:nth-child(1) { animation-delay: 0.2s; }
-        .feature-item:nth-child(2) { animation-delay: 0.4s; }
-        .feature-item:nth-child(3) { animation-delay: 0.6s; }
-        .feature-item:nth-child(4) { animation-delay: 0.8s; }
+        .feature-item:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-item:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-item:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        .feature-item:nth-child(4) {
+            animation-delay: 0.8s;
+        }
 
         @keyframes fadeInLeft {
             from {
                 opacity: 0;
                 transform: translateX(-20px);
             }
+
             to {
                 opacity: 1;
                 transform: translateX(0);
@@ -278,7 +299,7 @@
             transition: color 0.3s;
         }
 
-        .form-group input:focus ~ i {
+        .form-group input:focus~i {
             color: var(--primary-color);
         }
 
@@ -509,6 +530,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Floating Background Elements -->
     <div class="floating-element"></div>
@@ -522,7 +544,7 @@
             <i class="fas fa-book brand-logo"></i>
             <h1 class="brand-title">TechDoc Hub</h1>
             <p class="brand-subtitle">Technical Document Management System</p>
-            
+
             <div class="brand-features">
                 <div class="feature-item">
                     <i class="fas fa-shield-alt"></i>
@@ -550,7 +572,8 @@
                 <p>Sign in to access your technical documents</p>
             </div>
 
-            <form class="login-form" action="dashboard.html" method="get">
+            <form class="login-form" method="post">
+                {% csrf_token %}
                 <div class="form-group">
                     <label for="email">Email Address</label>
                     <div class="input-wrapper">
@@ -593,7 +616,7 @@
                 </div>
 
                 <div class="register-link">
-                    Don't have an account? <a href="#register">Request Access</a>
+                    Don't have an account? <a href="{% url 'guest:user_registration' %}">Request Access</a>
                 </div>
             </form>
 
@@ -609,4 +632,5 @@
         © 2023 Technical Support Department. All rights reserved.
     </div>
 </body>
+
 </html>
