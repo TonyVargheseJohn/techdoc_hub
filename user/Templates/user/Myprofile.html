@@ -1,56 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
 </head>
-<body>
+<form method="post">
 
-<h1 align="center">My Profile</h1>
+    <body>
+        <h1 align="center">My Profile</h1>
 
-<table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
+        <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
 
-    <tr>
-        <td colspan="2" align="center">
-            {% if data.photo %}
-                <img src="{{ data.photo.url }}" width="150" height="150">
-            {% else %}
-                No Photo
-            {% endif %}
-        </td>
-    </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    {% if data.photo %}
+                    <img src="{{ data.photo.url }}" width="150" height="150">
+                    {% else %}
+                    No Photo
+                    {% endif %}
+                </td>
+            </tr>
 
-    <tr>
-        <td>Name</td>
-        <td>{{ data.name }}</td>
-    </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{ data.name }}</td>
+            </tr>
 
-    <tr>
-        <td>Contact</td>
-        <td>{{ data.contact }}</td>
-    </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{ data.contact }}</td>
+            </tr>
 
-    <tr>
-        <td>Employee ID</td>
-        <td>{{ data.employeid }}</td>
-    </tr>
+            <tr>
+                <td>Employee ID</td>
+                <td>{{ data.employeid }}</td>
+            </tr>
 
-    <tr>
-        <td>Email</td>
-        <td>{{ data.email }}</td>
-    </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ data.email }}</td>
+            </tr>
 
-    <tr>
-        <td>Gender</td>
-        <td>{{ data.gender }}</td>
-    </tr>
+            <tr>
+                <td>Gender</td>
+                <td>{{ data.gender }}</td>
+            </tr>
 
-</table>
+        </table>
 
-<!-- ✅ Edit Profile Link -->
-<div align="center" style="margin-top:15px;">
-    <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
-</div>
+        <!-- ✅ Edit Profile Link -->
+        <div align="center" style="margin-top:15px;">
+            <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
+        </div>
 
-</body>
+    </body>
+</form>
+
 </html>
