@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Machine Category</title>
+</head>
+<body>
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    <h1 align="center">Machine Category</h1>
+
+    <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
+       
+        <tr>
+            <td>Category</td>
+            <td>
+                <input type="text" name="txtcat" value="{{cat.category_name}}" 
+                autocomplete="off" placeholder="Enter Category" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="Save" name="btn">
+                <input type="reset" value="Cancel">
+            </td>
+        </tr>
+
+    </table>
+
+
+    <br><br>
+
+
+    <table border="1" align="center" cellpadding="10">
+        <tr>
+            <th>Sl.No</th>
+            <th>Category</th>
+            <th>Action</th>
+        </tr>
+
+        {% for i in categories %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.category_name}}</td>
+            <td>
+                <a href="{% url 'wadmin:deletecategory' i.id %}">Delete</a> ||
+                <a href="{% url 'wadmin:editcategory' i.id %}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</form>
+
+
+</body>
+</html>

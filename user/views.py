@@ -21,6 +21,6 @@ def editprofile(request):
         data.employeid = request.POST.get('txtemployeid')
         data.email = request.POST.get('txtemail')
         data.save()
-        return redirect("user:myprofile")
+        return redirect("webuser:myprofile")
     else:
-        return render(request, "webuser/Editprofile.html", {'data': data})
+        return render(request, "user/Editprofile.html", {'data': data})

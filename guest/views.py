@@ -46,7 +46,7 @@ def login(request):
         ).count()
 
         admincount = Admin.objects.filter(
-            username=request.POST.get('email'),
+            email=request.POST.get('email'),
             password=request.POST.get('password')
         ).count()
 
@@ -62,7 +62,7 @@ def login(request):
 
         elif admincount > 0:
             admin = Admin.objects.get(
-                username=request.POST.get('email'),
+                email=request.POST.get('email'),
                 password=request.POST.get('password')
             )
             request.session['aid'] = admin.id

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Announcement</title>
+</head>
+<body>
+
+<form action="" method="post">
+    {% csrf_token %}
+
+    <h1 align="center">Announcement</h1>
+
+    <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
+       
+        <tr>
+            <td>Title</td>
+            <td>
+                <input type="text" name="title" value="{{announcement.title}}" 
+                placeholder="Enter Title" required>
+            </td>
+        </tr>
+
+        <tr>
+            <td>Description</td>
+            <td>
+                <textarea name="description" required>{{announcement.description}}</textarea>
+            </td>
+        </tr>
+
+        <tr>
+            <td colspan="2" align="center">
+                <input type="submit" value="Save">
+                <input type="reset" value="Cancel">
+            </td>
+        </tr>
+
+    </table>
+
+
+    <br><br>
+
+
+    <table border="1" align="center" cellpadding="10">
+        <tr>
+            <th>Sl.No</th>
+            <th>Title</th>
+            <th>Description</th>
+            <th>Action</th>
+        </tr>
+
+        {% for i in data %}
+        <tr>
+            <td>{{forloop.counter}}</td>
+            <td>{{i.title}}</td>
+            <td>{{i.description}}</td>
+            <td>
+                <a href="{% url 'wadmin:deleteannouncement' i.id %}">Delete</a> ||
+                <a href="{% url 'wadmin:editannouncement' i.id %}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+</form>
+
+
+</body>
+</html>

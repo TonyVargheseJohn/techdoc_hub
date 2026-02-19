@@ -18,10 +18,12 @@ class User(models.Model):
 class Admin(models.Model):
     name = models.CharField(max_length=50)
     contact = models.CharField(max_length=50)
+    employeid = models.CharField(max_length=50)
     email = models.EmailField(unique=True, null=True)
-    username = models.CharField(max_length=50, unique=True)
-    password = models.CharField(max_length=50)
+    gender = models.CharField(max_length=50)
     photo = models.FileField(upload_to='AdminPhoto/', null=True, blank=True)
+    password = models.CharField(max_length=50)
+    
 
     class Meta:
         db_table = 'tbl_admin'
