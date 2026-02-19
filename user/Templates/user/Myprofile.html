@@ -1,61 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>User Profile</title>
 </head>
-<body>
+<form method="post">
 
-<h1 align="center">My Profile</h1>
+    <body>
+        <h1 align="center">My Profile</h1>
 
+<<<<<<< HEAD
 <form method="post">
 {% csrf_token %}
 
 <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
+=======
+        <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
+>>>>>>> a2cf949be7ecd12d4fa2c4e34110b703d25ca535
 
-    <tr>
-        <td colspan="2" align="center">
-            {% if data.photo %}
-                <img src="{{ data.photo.url }}" width="150" height="150">
-            {% else %}
-                No Photo
-            {% endif %}
-        </td>
-    </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    {% if data.photo %}
+                    <img src="{{ data.photo.url }}" width="150" height="150">
+                    {% else %}
+                    No Photo
+                    {% endif %}
+                </td>
+            </tr>
 
-    <tr>
-        <td>Name</td>
-        <td>{{ data.name }}</td>
-    </tr>
+            <tr>
+                <td>Name</td>
+                <td>{{ data.name }}</td>
+            </tr>
 
-    <tr>
-        <td>Contact</td>
-        <td>{{ data.contact }}</td>
-    </tr>
+            <tr>
+                <td>Contact</td>
+                <td>{{ data.contact }}</td>
+            </tr>
 
-    <tr>
-        <td>Employee ID</td>
-        <td>{{ data.employeid }}</td>
-    </tr>
+            <tr>
+                <td>Employee ID</td>
+                <td>{{ data.employeid }}</td>
+            </tr>
 
-    <tr>
-        <td>Email</td>
-        <td>{{ data.email }}</td>
-    </tr>
+            <tr>
+                <td>Email</td>
+                <td>{{ data.email }}</td>
+            </tr>
 
-    <tr>
-        <td>Gender</td>
-        <td>{{ data.gender }}</td>
-    </tr>
+            <tr>
+                <td>Gender</td>
+                <td>{{ data.gender }}</td>
+            </tr>
 
-</table>
+        </table>
 
+<<<<<<< HEAD
 </form>
 
 <!-- ✅ Edit Profile Link -->
 <div align="center" style="margin-top:15px;">
     <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
 </div>
+=======
+        <!-- ✅ Edit Profile Link -->
+        <div align="center" style="margin-top:15px;">
+            <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
+        </div>
+>>>>>>> a2cf949be7ecd12d4fa2c4e34110b703d25ca535
 
-</body>
+    </body>
+</form>
+
 </html>

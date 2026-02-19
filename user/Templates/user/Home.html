@@ -1,1 +1,15 @@
-<a href="{% url 'webuser:myprofile' %}">My Profile</a>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>User Home</title>
+</head>
+
+<body>
+    <h1>Welcome, {{ user.name }}</h1>
+    <a href="{% url 'webuser:myprofile' %}">My Profile</a>
+    <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
+</body>
+
+</html>
