@@ -9,6 +9,7 @@ class User(models.Model):
     gender = models.CharField(max_length=50)
     photo = models.FileField(upload_to='UserPhoto/')
     password = models.CharField(max_length=50, unique=True)
+    status = models.CharField(max_length=20, default='pending')
 
     class Meta:
         db_table = 'tbl_user'

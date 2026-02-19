@@ -27,8 +27,4 @@ def editprofile(request):
         data.save()
         return redirect("webuser:myprofile")
     else:
-<<<<<<< HEAD
         return render(request, "user/Editprofile.html", {'data': data})
-=======
-        return render(request,"user/Editprofile.html", {'data': data})
->>>>>>> a2cf949be7ecd12d4fa2c4e34110b703d25ca535

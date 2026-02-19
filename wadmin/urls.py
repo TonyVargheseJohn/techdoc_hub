@@ -18,5 +18,11 @@ urlpatterns = [
     path('Editannouncement/<int:eid>', views.editannouncement, name="editannouncement"),
     path('Deleteannouncement/<int:eid>', views.deleteannouncement, name="deleteannouncement"),
 
+    path('NewUsers/', views.newusers, name="newusers"),
+    path('AcceptUser/<int:id>', views.acceptuser, name="acceptuser"),
+    path('RejectUser/<int:id>', views.rejectuser, name="rejectuser"),
+    path('AcceptedUsers/', views.acceptedusers, name="acceptedusers"),
+    path('RejectedUsers/', views.rejectedusers, name="rejectedusers"),
+
 
 ]

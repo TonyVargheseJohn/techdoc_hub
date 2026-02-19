@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rejected Users</title>
+</head>
+
+<body>
+    <h1>Rejected Users</h1>
+    <a href="{% url 'wadmin:newusers' %}">View New Users</a> |
+    <a href="{% url 'wadmin:acceptedusers' %}">View Accepted Users</a> |
+    <a href="{% url 'wadmin:Home' %}">Back to Dashboard</a>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        {% for i in data %}
+        <tr>
+            <td>{{i.name}}</td>
+            <td>{{i.email}}</td>
+            <td>{{i.status}}</td>
+            <td>
+                <a href="{% url 'wadmin:acceptuser' i.id %}">Accept</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
