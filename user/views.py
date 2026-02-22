@@ -42,13 +42,29 @@ def viewannouncement(request):
 def viewmachine(request):
     categorydata = MachineCategory.objects.all()
     machines = Machine.objects.none()
+    selected_machine = None
 
-    if request.GET.get("cat"):
-        machines = Machine.objects.filter(category_id=request.GET.get("cat"))
+    cat_id = request.GET.get("cat")
+    machine_id = request.GET.get("machine")
+
+    sel_cat_id = int(cat_id) if cat_id and cat_id.isdigit() else 0
+    sel_machine_id = int(machine_id) if machine_id and machine_id.isdigit() else 0
+
+    if cat_id:
+        machines = Machine.objects.filter(category_id=cat_id)
+        
+    if machine_id and cat_id:
+        try:
+            selected_machine = Machine.objects.get(id=machine_id, category_id=cat_id)
+        except Machine.DoesNotExist:
+            pass
 
     return render(request, "User/ViewMachine.html", {
         "category": categorydata,
-        "machines": machines
+        "machines": machines,
+        "selected_machine": selected_machine,
+        "sel_cat_id": sel_cat_id,
+        "sel_machine_id": sel_machine_id
     })
 
 
