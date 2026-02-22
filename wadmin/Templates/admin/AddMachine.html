@@ -1,147 +1,213 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <title>Machine</title>
 </head>
+
 <body>
 
-<form action="" method="post" enctype="multipart/form-data">
-    {% csrf_token %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
 
-    <h1 align="center">Machine</h1>
+        <h1 align="center">Machine</h1>
 
-    <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
-       
-        <tr>
-            <td>Category</td>
-            <td>
-                <select name="category" required>
-                    <option value="">--Select Category--</option>
-                    {% for c in category %}
-                    <option value="{{c.id}}" {% if machine.category.id == c.id %}selected{% endif %}>
-                        {{c.category_name}}
-                    </option>
-                    {% endfor %}
-                </select>
-            </td>
-        </tr>
+        <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
 
-        <tr>
-            <td>Machine Name</td>
-            <td>
-                <input type="text" name="machine"
-                value="{{machine.machine_name}}"
-                placeholder="Enter Machine Name" required>
-            </td>
-        </tr>
+            <tr>
+                <td>Category</td>
+                <td>
+                    <select name="category" required>
+                        <option value="">--Select Category--</option>
+                        {% for c in category %}
+                        <option value="{{c.id}}" {% if machine.category.id == c.id %}selected{% endif %}>
+                            {{c.category_name}}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </td>
+            </tr>
 
-        <tr>
-            <td>Description</td>
-            <td>
-                <textarea name="description" required>{{machine.description}}</textarea>
-            </td>
-        </tr>
+            <tr>
+                <td>Machine Name</td>
+                <td>
+                    <input type="text" name="machine" value="{{machine.machine_name}}" placeholder="Enter Machine Name"
+                        required>
+                </td>
+            </tr>
 
-        <tr>
-            <td>Image</td>
-            <td>
-                <input type="file" name="image">
-            </td>
-        </tr>
+            <tr>
+                <td>Description</td>
+                <td>
+                    <textarea name="description" required>{{machine.description}}</textarea>
+                </td>
+            </tr>
 
-        <tr>
-            <td>Spare Manual (PDF)</td>
-            <td>
-                <input type="file" name="spare_manual" accept="application/pdf">
-            </td>
-        </tr>
+            <tr>
+                <td>Image</td>
+                <td>
+                    <input type="file" name="image">
+                </td>
+            </tr>
 
-        <tr>
-            <td>Software File (PDF)</td>
-            <td>
-                <input type="file" name="software_file" accept="application/pdf">
-            </td>
-        </tr>
+            <tr>
+                <td>Spare Manual (PDF)</td>
+                <td>
+                    <input type="file" name="spare_manual" accept="application/pdf">
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" value="Save">
-                <input type="reset" value="Cancel">
-            </td>
-        </tr>
+            <tr>
+                <td>Software File (PDF)</td>
+                <td>
+                    <input type="file" name="software_file" accept="application/pdf">
+                </td>
+            </tr>
 
-    </table>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" value="Save">
+                    <input type="reset" value="Cancel">
+                </td>
+            </tr>
 
-
-    <br><br>
+        </table>
 
 
-    <table border="1" align="center" cellpadding="10">
-        <tr>
-            <th>Sl.No</th>
-            <th>Category</th>
-            <th>Machine</th>
-            <th>Description</th>
-            <th>Image</th>
-            <th>Manual</th>
-            <th>Software</th>
-            <th>Action</th>
-        </tr>
+        <br><br>
 
-        {% for i in data %}
-        <tr>
-            <td>{{forloop.counter}}</td>
-            <td>{{i.category.category_name}}</td>
-            <td>{{i.machine_name}}</td>
-            <td>{{i.description}}</td>
 
-            <!-- IMAGE -->
-            <td>
-                {% if i.image %}
-                <img src="{{i.image.url}}" width="60">
-                {% else %}
-                No Image
-                {% endif %}
-            </td>
+        <table border="1" align="center" cellpadding="10">
+            <tr>
+                <th>Sl.No</th>
+                <th>Category</th>
+                <th>Machine</th>
+                <th>Description</th>
+                <th>Image</th>
+                <th>Manual</th>
+                <th>Software</th>
+                <th>Action</th>
+            </tr>
 
-            <!-- MANUAL PDF VIEW -->
-            <td>
-                {% if i.spare_manual %}
+            {% for i in data %}
+            <tr>
+                <td>{{forloop.counter}}</td>
+                <td>{{i.category.category_name}}</td>
+                <td>{{i.machine_name}}</td>
+                <td>{{i.description}}</td>
+
+                <!-- IMAGE -->
+                <td>
+                    {% if i.image %}
+                    <img src="{{ i.image.url }}" width="60">
+                    {% else %}
+                    No Image
+                    {% endif %}
+                </td>
+
+                <!-- MANUAL PDF VIEW -->
+                <td>
+                    {% if i.spare_manual %}
                     <iframe src="{{i.spare_manual.url}}" width="120" height="150"></iframe><br>
-                    <a href="{{i.spare_manual.url}}" target="_blank">Open</a>
-                {% else %}
+                    <a href="javascript:void(0)" onclick="openPdfModal('{{ i.spare_manual.url }}')">Open Manual</a>
+                    {% else %}
                     No File
-                {% endif %}
-            </td>
+                    {% endif %}
+                </td>
 
-            <!-- SOFTWARE PDF VIEW -->
-            <td>
-                {% if i.software_file %}
+                <!-- SOFTWARE PDF VIEW -->
+                <td>
+                    {% if i.software_file %}
                     <iframe src="{{i.software_file.url}}" width="120" height="150"></iframe><br>
-                    <a href="{{i.software_file.url}}" target="_blank">Open</a>
-                {% else %}
+                    <a href="javascript:void(0)" onclick="openPdfModal('{{ i.software_file.url }}')">Open Software
+                        File</a>
+                    {% else %}
                     No File
-                {% endif %}
-            </td>
+                    {% endif %}
+                </td>
 
-            <!-- ACTION -->
-            <td>
-                <a href="{% url 'wadmin:deletemachine' i.id %}">Delete</a> ||
-                <a href="{% url 'wadmin:editmachine' i.id %}">Edit</a>
-            </td>
-        </tr>
-        {% endfor %}
+                <!-- ACTION -->
+                <td>
+                    <a href="{% url 'wadmin:deletemachine' i.id %}">Delete</a> ||
+                    <a href="{% url 'wadmin:editmachine' i.id %}">Edit</a>
+                </td>
+            </tr>
+            {% endfor %}
 
-    </table>
+        </table>
 
-</form>
+    </form>
 
-<script>
-{% if msg %}
-alert("{{msg}}")
-{% endif %}
-</script>
+    <script>
+        function openPdfModal(pdfUrl) {
+            document.getElementById('pdfModal').style.display = 'flex';
+            document.getElementById('pdfViewer').src = pdfUrl;
+        }
+
+        function closePdfModal() {
+            document.getElementById('pdfModal').style.display = 'none';
+            document.getElementById('pdfViewer').src = '';
+        }
+
+        var msg = "{{ msg|escapejs }}";
+        if (msg) {
+            alert(msg);
+        }
+    </script>
+
+    <!-- PDF Modal -->
+    <style>
+        .pdf-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pdf-modal-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            width: 80%;
+            height: 80%;
+            text-align: right;
+            position: relative;
+        }
+
+        .pdf-close {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-weight: bold;
+            position: absolute;
+            top: -10px;
+            right: -10px;
+        }
+
+        iframe.pdf-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+
+    <div id="pdfModal" class="pdf-modal">
+        <div class="pdf-modal-content">
+            <button class="pdf-close" onclick="closePdfModal()">X</button>
+            <iframe id="pdfViewer" class="pdf-iframe" src=""></iframe>
+        </div>
+    </div>
 
 </body>
+
 </html>
