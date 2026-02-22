@@ -205,3 +205,56 @@
 </body>
 
 </html>
+
+
+{% if selected_machine %}
+<br><br>
+
+<h2 align="center">Uploaded Files for this Machine</h2>
+
+<table border="1" align="center" cellpadding="10" width="70%">
+
+<tr>
+<th>Sl.No</th>
+<th>File</th>
+<th>Uploaded By</th>
+<th>Date</th>
+</tr>
+
+{% for f in uploaded_files %}
+<tr>
+
+<td align="center">{{forloop.counter}}</td>
+
+<td align="center">
+
+<a href="{{f.file.url}}" target="_blank">View File</a>
+<br><br>
+
+<a href="{% url 'webuser:download_file' f.id %}">
+    <button type="button">Download</button>
+</a>
+
+</td>
+
+<td align="center">
+{{f.user.name}}
+</td>
+
+<td align="center">
+{{f.upload_date}}
+</td>
+
+</tr>
+
+{% empty %}
+
+<tr>
+<td colspan="4" align="center">No files uploaded for this machine</td>
+</tr>
+
+{% endfor %}
+
+</table>
+
+{% endif %}

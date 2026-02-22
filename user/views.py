@@ -1,4 +1,7 @@
 from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import FileResponse, Http404
+import os
 
 # Create your views here.
 from guest.models import *
@@ -39,34 +42,56 @@ def viewannouncement(request):
     })
 
 
-def viewmachine(request):
-    categorydata = MachineCategory.objects.all()
-    machines = Machine.objects.none()
-    selected_machine = None
+# def viewmachine(request):
+#     categorydata = MachineCategory.objects.all()
+#     machines = Machine.objects.none()
+#     selected_machine = None
 
+#     cat_id = request.GET.get("cat")
+#     machine_id = request.GET.get("machine")
+
+#     sel_cat_id = int(cat_id) if cat_id and cat_id.isdigit() else 0
+#     sel_machine_id = int(machine_id) if machine_id and machine_id.isdigit() else 0
+
+#     if cat_id:
+#         machines = Machine.objects.filter(category_id=cat_id)
+        
+#     if machine_id and cat_id:
+#         try:
+#             selected_machine = Machine.objects.get(id=machine_id, category_id=cat_id)
+#         except Machine.DoesNotExist:
+#             pass
+
+#     return render(request, "User/ViewMachine.html", {
+#         "category": categorydata,
+#         "machines": machines,
+#         "selected_machine": selected_machine,
+#         "sel_cat_id": sel_cat_id,
+#         "sel_machine_id": sel_machine_id
+#     })
+
+
+def viewmachine(request):
+
+    category = MachineCategory.objects.all()
     cat_id = request.GET.get("cat")
     machine_id = request.GET.get("machine")
 
-    sel_cat_id = int(cat_id) if cat_id and cat_id.isdigit() else 0
-    sel_machine_id = int(machine_id) if machine_id and machine_id.isdigit() else 0
+    machines = Machine.objects.filter(category_id=cat_id) if cat_id else []
+    selected_machine = Machine.objects.filter(id=machine_id).first() if machine_id else None
 
-    if cat_id:
-        machines = Machine.objects.filter(category_id=cat_id)
-        
-    if machine_id and cat_id:
-        try:
-            selected_machine = Machine.objects.get(id=machine_id, category_id=cat_id)
-        except Machine.DoesNotExist:
-            pass
+    uploaded_files = None
+    if selected_machine:
+        uploaded_files = UserMachineFile.objects.filter(machine=selected_machine).select_related("user")
 
-    return render(request, "User/ViewMachine.html", {
-        "category": categorydata,
-        "machines": machines,
-        "selected_machine": selected_machine,
-        "sel_cat_id": sel_cat_id,
-        "sel_machine_id": sel_machine_id
+    return render(request,"user/ViewMachine.html",{
+        "category":category,
+        "machines":machines,
+        "selected_machine":selected_machine,
+        "uploaded_files":uploaded_files,
+        "sel_cat_id": int(cat_id) if cat_id else None,
+        "sel_machine_id": int(machine_id) if machine_id else None
     })
-
 
 
 def upload_machine_file(request):
@@ -86,3 +111,47 @@ def upload_machine_file(request):
         )
 
     return redirect("webuser:viewmachine")
+
+
+
+def download_file(request, fid):
+    try:
+        file_obj = UserMachineFile.objects.get(id=fid)
+        return FileResponse(file_obj.file.open('rb'), as_attachment=True)
+    except UserMachineFile.DoesNotExist:
+        raise Http404("File not found")
+    
+
+
+def my_uploads(request):
+    user_id = request.session.get("uid")
+
+    if not user_id:
+        return redirect("guest:login")
+
+    uploads = UserMachineFile.objects.filter(user_id=user_id).select_related("machine")
+
+    return render(request, "user/MyUploads.html", {
+        "uploads": uploads
+    })
+
+
+def delete_upload(request, id):
+    user_id = request.session.get("uid")
+
+    file = get_object_or_404(UserMachineFile, id=id, user_id=user_id)
+
+    if request.method == "POST":
+        file.file.delete()   # delete file from media folder
+        file.delete()        # delete record
+        return redirect("webuser:my_uploads")
+
+    return redirect("webuser:my_uploads")
+
+
+def my_notifications(request):
+    uid = request.session.get("uid")
+
+    notes = Notification.objects.filter(user_id=uid).order_by("-created_at")
+
+    return render(request,"user/Notifications.html",{"notes":notes})

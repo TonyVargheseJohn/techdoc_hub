@@ -24,5 +24,8 @@ urlpatterns = [
     path('AcceptedUsers/', views.acceptedusers, name="acceptedusers"),
     path('RejectedUsers/', views.rejectedusers, name="rejectedusers"),
 
+    path("uploads/", views.view_uploaded_files, name="view_uploaded_files"),
+    path("delete-upload/<int:id>/", views.delete_uploaded_file, name="delete_uploaded_file"),
+
 
 ]

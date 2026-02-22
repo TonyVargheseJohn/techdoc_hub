@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Uploaded Files</title>
+</head>
+<body>
+
+<h1 align="center">All Uploaded Files</h1>
+
+<table border="1" align="center" cellpadding="10" width="95%">
+<tr>
+    <th>Sl.No</th>
+    <th>Category</th>
+    <th>Machine</th>
+    <th>User</th>
+    <th>File</th>
+    <th>Date</th>
+    <th>Action</th>
+</tr>
+
+{% for f in files %}
+<tr>
+
+<td align="center">{{forloop.counter}}</td>
+
+<td>{{f.machine.category.category_name}}</td>
+
+<td>{{f.machine.machine_name}}</td>
+
+<td>{{f.user.name}}</td>
+
+<td align="center">
+    <a href="{{f.file.url}}" target="_blank">View</a>
+    |
+    <a href="{{f.file.url}}" download>Download</a>
+</td>
+
+<td align="center">{{f.upload_date}}</td>
+
+<td align="center">
+<form method="post" action="{% url 'wadmin:delete_uploaded_file' f.id %}">
+    {% csrf_token %}
+    <button onclick="showDeleteBox({{f.id}})">Delete</button>
+
+<div id="deleteBox{{f.id}}" style="display:none;">
+    <form method="post" action="{% url 'wadmin:delete_uploaded_file' f.id %}">
+        {% csrf_token %}
+        <input type="text" name="reason" placeholder="Enter reason" required>
+        <button type="submit">Confirm Delete</button>
+        <button type="button" onclick="hideDeleteBox({{f.id}})">Cancel</button>
+    </form>
+</div>
+</form>
+</td>
+
+</tr>
+{% empty %}
+<tr>
+<td colspan="7" align="center">No uploaded files found</td>
+</tr>
+{% endfor %}
+
+</table>
+
+</body>
+</html>

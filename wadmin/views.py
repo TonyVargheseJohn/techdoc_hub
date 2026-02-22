@@ -3,6 +3,8 @@ from django.shortcuts import render,redirect ,get_object_or_404
 # Create your views here.
 from wadmin.models import *
 from guest.models import *
+from user.models import *
+
 
 
 def home(request):
@@ -249,3 +251,60 @@ def acceptedusers(request):
 def rejectedusers(request):
     data = User.objects.filter(status='rejected')
     return render(request, "admin/RejectedUsers.html", {'data': data})
+
+
+
+# def view_uploaded_files(request):
+#     files = UserMachineFile.objects.select_related(
+#         "machine__category", "user"
+#     ).all().order_by("-upload_date")
+
+#     return render(request, "admin/ViewUploads.html", {"files": files})
+
+
+
+def view_uploaded_files(request):
+
+    # 🔐 Optional Admin Session Check (recommended)
+    if not request.session.get("aid"):
+        return redirect("wadmin:login")
+
+    # 🚀 Optimized Query
+    files = (
+        UserMachineFile.objects
+        .select_related("machine", "machine__category", "user")
+        .order_by("-upload_date")
+    )
+
+    context = {
+        "files": files
+    }
+
+    return render(request, "admin/ViewUploads.html", context)
+
+
+# def delete_uploaded_file(request, fid):
+#     file = get_object_or_404(UserMachineFile, id=fid)
+
+#     # delete file from storage
+#     if file.file:
+#         file.file.delete()
+
+#     file.delete()
+#     return redirect("wadmin:view_uploaded_files")
+
+
+def delete_uploaded_file(request, id):
+    file = get_object_or_404(UserMachineFile, id=id)
+
+    if request.method == "POST":
+        reason = request.POST.get("reason")
+
+        DeleteNotification.objects.create(
+            user=file.user,
+            message=f"Your file for machine '{file.machine.machine_name}' was deleted. Reason: {reason}"
+        )
+
+        file.delete()
+
+    return redirect("wadmin:view_uploads")
