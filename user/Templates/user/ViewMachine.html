@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>View Machines</title>
+</head>
+<body>
+
+<h1 align="center">View Machines</h1>
+
+<!-- Category Filter -->
+<form method="get" align="center">
+
+    <label>Select Category:</label>
+
+    <select name="cat" onchange="this.form.submit()" required>
+        <option value="">--Select Category--</option>
+
+        {% for c in category %}
+        <option value="{{c.id}}" {% if request.GET.cat == c.id|stringformat:"s" %}selected{% endif %}>
+            {{c.category_name}}
+        </option>
+        {% endfor %}
+
+    </select>
+
+</form>
+
+
+<br><br>
+
+
+<!-- Machine List -->
+<table border="1" align="center" cellpadding="10" width="90%">
+    <tr>
+        <th>Sl.No</th>
+        <th>Machine</th>
+        <th>Description</th>
+        <th>Image</th>
+        <th>Manual</th>
+        <th>Software</th>
+    </tr>
+
+    {% for m in machines %}
+    <tr>
+        <td align="center">{{forloop.counter}}</td>
+        <td>{{m.machine_name}}</td>
+        <td>{{m.description}}</td>
+
+        <td align="center">
+            {% if m.image %}
+            <img src="{{m.image.url}}" width="80">
+            {% else %}
+            No Image
+            {% endif %}
+        </td>
+
+        <td align="center">
+            {% if m.spare_manual %}
+            <a href="{{m.spare_manual.url}}" target="_blank">View PDF</a>
+            {% else %}
+            Not Available
+            {% endif %}
+        </td>
+
+        <td align="center">
+            {% if m.software_file %}
+            <a href="{{m.software_file.url}}" target="_blank">View PDF</a>
+            {% else %}
+            Not Available
+            {% endif %}
+        </td>
+
+    </tr>
+
+    {% empty %}
+    <tr>
+        <td colspan="6" align="center">No machines found</td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

@@ -14,14 +14,57 @@ def myprofile(request):
     return render(request, "admin/Myprofile.html", {'data': data})
 
 
+
+# def addcategory(request):
+#     categorydata = MachineCategory.objects.all()
+#     if request.method == "POST":
+#         c = MachineCategory.objects.filter(
+#             category_name__icontains=request.POST.get("txtcat")
+#         )
+#         if c:
+#             return render(request, "admin/AddMachineCategory.html", {
+#                 'categories': categorydata,
+#                 'msg': "Category already exists"
+#             })
+#         else:
+#             MachineCategory.objects.create(
+#                 category_name=request.POST.get('txtcat')
+#             )
+#             return render(request, "admin/AddMachineCategory.html", {
+#                 'categories': categorydata
+#             })
+#     else:
+#         return render(request, "admin/AddMachineCategory.html", {
+#             'categories': categorydata
+#         })
+
 def addcategory(request):
+    categorydata = MachineCategory.objects.all()
     if request.method == "POST":
         name = request.POST.get("txtcat")
-        MachineCategory.objects.create(category_name=name)
-        return redirect("wadmin:addcategory")
 
-    categories = MachineCategory.objects.all()
-    return render(request, "admin/AddMachineCategory.html", {"categories": categories})
+        c = MachineCategory.objects.filter(
+            category_name__icontains=name
+        )
+
+        if c:
+            return render(request, "admin/AddMachineCategory.html", {
+                'categories': categorydata,
+                'msg': "Category already exists"
+            })
+        else:
+            MachineCategory.objects.create(
+                category_name=name
+            )
+
+            return render(request, "admin/AddMachineCategory.html", {
+                'categories': categorydata,
+                'msg': "Category added successfully"
+            })
+    else:
+        return render(request, "admin/AddMachineCategory.html", {
+            'categories': categorydata
+        })
 
 
 
@@ -43,31 +86,47 @@ def deletecategory(request, did):
     return redirect("wadmin:addcategory")
 
 
+
+
 def machine(request):
+    machinedata = Machine.objects.all()
+    categorydata = MachineCategory.objects.all()
+
     if request.method == "POST":
         cat_id = request.POST.get("category")
         name = request.POST.get("machine")
-        desc = request.POST.get("description")
-        img = request.FILES.get("image")
 
-        category = MachineCategory.objects.get(id=cat_id)
-
-        Machine.objects.create(
-            category=category,
-            machine_name=name,
-            description=desc,
-            image=img
+        m = Machine.objects.filter(
+            machine_name__icontains=name,
+            category_id=cat_id
         )
 
-        return redirect("wadmin:machine")
+        if m:
+            return render(request, "admin/AddMachine.html", {
+                'data': machinedata,
+                'category': categorydata,
+                'msg': "Machine already exists in this category"
+            })
+        else:
+            Machine.objects.create(
+                category=MachineCategory.objects.get(id=cat_id),
+                machine_name=name,
+                description=request.POST.get("description"),
+                image=request.FILES.get("image"),
+                spare_manual=request.FILES.get("spare_manual"),
+                software_file=request.FILES.get("software_file")
+            )
 
-    data = Machine.objects.all()
-    category = MachineCategory.objects.all()
+            return render(request, "admin/AddMachine.html", {
+                'data': machinedata,
+                'category': categorydata
+            })
+    else:
+        return render(request, "admin/AddMachine.html", {
+            'data': machinedata,
+            'category': categorydata
+        })
 
-    return render(request, "admin/AddMachine.html", {
-        "data": data,
-        "category": category
-    })
 
 
 def editmachine(request, eid):
@@ -80,8 +139,17 @@ def editmachine(request, eid):
         machine.machine_name = request.POST.get("machine")
         machine.description = request.POST.get("description")
 
+        # Image update
         if request.FILES.get("image"):
             machine.image = request.FILES.get("image")
+
+        # Spare manual update
+        if request.FILES.get("spare_manual"):
+            machine.spare_manual = request.FILES.get("spare_manual")
+
+        # Software file update
+        if request.FILES.get("software_file"):
+            machine.software_file = request.FILES.get("software_file")
 
         machine.save()
         return redirect("wadmin:machine")

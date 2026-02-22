@@ -30,7 +30,8 @@
         <tr>
             <td>Machine Name</td>
             <td>
-                <input type="text" name="machine" value="{{machine.machine_name}}" 
+                <input type="text" name="machine"
+                value="{{machine.machine_name}}"
                 placeholder="Enter Machine Name" required>
             </td>
         </tr>
@@ -46,6 +47,20 @@
             <td>Image</td>
             <td>
                 <input type="file" name="image">
+            </td>
+        </tr>
+
+        <tr>
+            <td>Spare Manual (PDF)</td>
+            <td>
+                <input type="file" name="spare_manual" accept="application/pdf">
+            </td>
+        </tr>
+
+        <tr>
+            <td>Software File (PDF)</td>
+            <td>
+                <input type="file" name="software_file" accept="application/pdf">
             </td>
         </tr>
 
@@ -69,6 +84,8 @@
             <th>Machine</th>
             <th>Description</th>
             <th>Image</th>
+            <th>Manual</th>
+            <th>Software</th>
             <th>Action</th>
         </tr>
 
@@ -78,11 +95,37 @@
             <td>{{i.category.category_name}}</td>
             <td>{{i.machine_name}}</td>
             <td>{{i.description}}</td>
+
+            <!-- IMAGE -->
             <td>
                 {% if i.image %}
                 <img src="{{i.image.url}}" width="60">
+                {% else %}
+                No Image
                 {% endif %}
             </td>
+
+            <!-- MANUAL PDF VIEW -->
+            <td>
+                {% if i.spare_manual %}
+                    <iframe src="{{i.spare_manual.url}}" width="120" height="150"></iframe><br>
+                    <a href="{{i.spare_manual.url}}" target="_blank">Open</a>
+                {% else %}
+                    No File
+                {% endif %}
+            </td>
+
+            <!-- SOFTWARE PDF VIEW -->
+            <td>
+                {% if i.software_file %}
+                    <iframe src="{{i.software_file.url}}" width="120" height="150"></iframe><br>
+                    <a href="{{i.software_file.url}}" target="_blank">Open</a>
+                {% else %}
+                    No File
+                {% endif %}
+            </td>
+
+            <!-- ACTION -->
             <td>
                 <a href="{% url 'wadmin:deletemachine' i.id %}">Delete</a> ||
                 <a href="{% url 'wadmin:editmachine' i.id %}">Edit</a>
@@ -93,6 +136,12 @@
     </table>
 
 </form>
+
+<script>
+{% if msg %}
+alert("{{msg}}")
+{% endif %}
+</script>
 
 </body>
 </html>
