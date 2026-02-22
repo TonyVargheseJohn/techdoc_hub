@@ -1,35 +1,51 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Announcements</title>
-</head>
-<body>
+{% include 'user/Header.html' %}
 
-<h1 align="center">Latest Announcements</h1>
+<div class="row justify-content-center mb-4">
+    <div class="col-12 text-center">
+        <h2 class="fw-bold mb-0">Latest Announcements</h2>
+        <p class="text-muted">Stay updated with important notices and technical news.</p>
+    </div>
+</div>
 
-<table border="1" align="center" cellpadding="10" style="border-collapse: collapse; width:70%;">
-    <tr>
-        <th>Sl.No</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Date</th>
-    </tr>
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-custom table-hover m-0 w-100 align-middle">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="width: 8%;">#</th>
+                            <th style="width: 25%;">Title</th>
+                            <th>Description</th>
+                            <th style="width: 15%;">Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in data %}
+                        <tr>
+                            <td class="text-center text-muted fw-bold">{{forloop.counter}}</td>
+                            <td class="fw-bold text-dark">{{i.title}}</td>
+                            <td class="text-muted">{{i.description}}</td>
+                            <td><span class="badge bg-light text-dark border"><i
+                                        class="fa-regular fa-calendar me-1"></i> {{i.date}}</span></td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="4" class="text-center text-muted py-5">
+                                <i class="fa-regular fa-folder-open mb-2 text-primary" style="font-size: 2rem;"></i><br>
+                                No Announcements Available
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
 
-    {% for i in data %}
-    <tr>
-        <td align="center">{{forloop.counter}}</td>
-        <td>{{i.title}}</td>
-        <td>{{i.description}}</td>
-        <td>{{i.date}}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="4" align="center">No Announcements Available</td>
-    </tr>
-    {% endfor %}
-
-</table>
-
+</div><!-- End .user-container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

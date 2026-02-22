@@ -300,11 +300,11 @@ def delete_uploaded_file(request, id):
     if request.method == "POST":
         reason = request.POST.get("reason")
 
-        DeleteNotification.objects.create(
+        Notification.objects.create(
             user=file.user,
             message=f"Your file for machine '{file.machine.machine_name}' was deleted. Reason: {reason}"
         )
 
         file.delete()
 
-    return redirect("wadmin:view_uploads")
+    return redirect("wadmin:view_uploaded_files")

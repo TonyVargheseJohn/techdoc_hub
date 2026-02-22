@@ -1,67 +1,49 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'user/Header.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <title>User Profile</title>
-</head>
+<div class="row justify-content-center mb-5">
+    <div class="col-md-6 col-lg-5">
+        <div class="card shadow-sm border-0 text-center p-4" style="border-radius: 16px;">
+            <div class="mb-4">
+                {% if data.photo %}
+                <img src="{{ data.photo.url }}" alt="Profile Photo" class="rounded-circle shadow-sm"
+                    style="width: 120px; height: 120px; object-fit: cover; border: 4px solid #f8fafc;">
+                {% else %}
+                <div class="rounded-circle shadow-sm mx-auto d-flex align-items-center justify-content-center"
+                    style="width: 120px; height: 120px; background: linear-gradient(135deg, var(--primary-color) 0%, #2563eb 100%); color: white; font-size: 3rem; border: 4px solid #f8fafc;">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                {% endif %}
+                <h3 class="mt-3 fw-bold text-dark">{{ data.name }}</h3>
+                <p class="text-muted small">Employee ID: {{ data.employeid }}</p>
+            </div>
 
-<body>
-    <h1 align="center">My Profile</h1>
+            <table class="table table-borderless text-start align-middle mb-4">
+                <tbody>
+                    <tr>
+                        <td class="text-muted fw-bold" style="width: 40%;"><i class="fa-solid fa-phone me-2"></i>
+                            Contact</td>
+                        <td class="fw-semibold text-dark">{{ data.contact }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-bold"><i class="fa-solid fa-envelope me-2"></i> Email</td>
+                        <td class="fw-semibold text-dark">{{ data.email }}</td>
+                    </tr>
+                    <tr>
+                        <td class="text-muted fw-bold"><i class="fa-solid fa-venus-mars me-2"></i> Gender</td>
+                        <td class="fw-semibold text-dark">{{ data.gender }}</td>
+                    </tr>
+                </tbody>
+            </table>
 
-    <form method="post">
-        {% csrf_token %}
-
-        <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
-
-            <tr>
-                <td colspan="2" align="center">
-                    {% if data.photo %}
-                    <img src="{{ data.photo.url }}" width="100px" height="100px">
-                    {% else %}
-                    No Photo
-                    {% endif %}
-                </td>
-            </tr>
-
-            <tr>
-                <td>Name</td>
-                <td>{{ data.name }}</td>
-            </tr>
-
-            <tr>
-                <td>Contact</td>
-                <td>{{ data.contact }}</td>
-            </tr>
-
-            <tr>
-                <td>Employee ID</td>
-                <td>{{ data.employeid }}</td>
-            </tr>
-
-            <tr>
-                <td>Email</td>
-                <td>{{ data.email }}</td>
-            </tr>
-
-            <tr>
-                <td>Gender</td>
-                <td>{{ data.gender }}</td>
-            </tr>
-
-        </table>
-
-    </form>
-
-    <!-- ✅ Edit Profile Link -->
-    <div align="center" style="margin-top:15px;">
-        <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
+            <a href="{% url 'webuser:editprofile' %}" class="btn btn-primary-custom w-100">
+                <i class="fa-solid fa-pen-to-square me-2"></i> Edit Profile
+            </a>
+        </div>
     </div>
-    <!-- ✅ Edit Profile Link -->
-    <!-- <div align="center" style="margin-top:15px;">
-            <a href="{% url 'webuser:editprofile' %}">Edit Profile</a>
-        </div> -->
+</div>
 
+</div><!-- End .user-container -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

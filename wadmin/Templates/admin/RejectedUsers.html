@@ -1,35 +1,50 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'admin/Header.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rejected Users</title>
-</head>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Rejected Users</h2>
+    <div class="btn-group shadow-sm">
+        <a href="{% url 'wadmin:newusers' %}" class="btn btn-outline-primary"><i class="fa-solid fa-list"></i> New
+            Requests</a>
+        <a href="{% url 'wadmin:acceptedusers' %}" class="btn btn-outline-success"><i
+                class="fa-solid fa-check-double"></i> Accepted</a>
+    </div>
+</div>
 
-<body>
-    <h1>Rejected Users</h1>
-    <a href="{% url 'wadmin:newusers' %}">View New Users</a> |
-    <a href="{% url 'wadmin:acceptedusers' %}">View Accepted Users</a> |
-    <a href="{% url 'wadmin:Home' %}">Back to Dashboard</a>
-    <table border="1">
-        <tr>
-            <th>Name</th>
-            <th>Email</th>
-            <th>Status</th>
-            <th>Action</th>
-        </tr>
-        {% for i in data %}
-        <tr>
-            <td>{{i.name}}</td>
-            <td>{{i.email}}</td>
-            <td>{{i.status}}</td>
-            <td>
-                <a href="{% url 'wadmin:acceptuser' i.id %}">Accept</a>
-            </td>
-        </tr>
-        {% endfor %}
-    </table>
+<div class="card shadow-sm border-0">
+    <div class="card-body p-0 table-responsive">
+        <table class="table table-custom table-hover m-0 w-100 align-middle">
+            <thead>
+                <tr>
+                    <th class="ps-4">Name</th>
+                    <th>Email</th>
+                    <th>Status</th>
+                    <th class="text-center">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td class="ps-4 fw-bold text-dark">{{i.name}}</td>
+                    <td class="text-muted">{{i.email}}</td>
+                    <td><span class="badge bg-danger">{{i.status|title}}</span></td>
+                    <td class="text-center">
+                        <a href="{% url 'wadmin:acceptuser' i.id %}" class="btn btn-sm btn-outline-success shadow-sm"><i
+                                class="fa-solid fa-check"></i> Accept</a>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">No rejected users found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</div><!-- End .admin-container -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
