@@ -3,6 +3,9 @@ from django.shortcuts import render,redirect
 # Create your views here.
 from guest.models import *
 from wadmin.models import *
+from user.models import *
+
+
 
 
 def home(request):
@@ -48,3 +51,22 @@ def viewmachine(request):
         "machines": machines
     })
 
+
+
+def upload_machine_file(request):
+    if request.method == "POST":
+        machine_id = request.POST.get("machine_id")
+        file = request.FILES.get("file")
+
+        user_id = request.session.get("uid")   # logged user id
+
+        machine = Machine.objects.get(id=machine_id)
+        user = User.objects.get(id=user_id)
+
+        UserMachineFile.objects.create(
+            user=user,
+            machine=machine,
+            file=file
+        )
+
+    return redirect("webuser:viewmachine")

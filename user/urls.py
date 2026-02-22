@@ -7,6 +7,8 @@ urlpatterns = [
     path('Editprofile/', views.editprofile,name="editprofile"),
     path('Viewannouncement/', views.viewannouncement,name="viewannouncement"),
     path('Viewmachine/', views.viewmachine,name="viewmachine"),
+    path('uploadmachinefile/', views.upload_machine_file,name="upload_machine_file"),
+
    
 
     
