@@ -28,3 +28,5 @@ def editprofile(request):
         return redirect("webuser:myprofile")
     else:
         return render(request, "user/Editprofile.html", {'data': data})
+
+
