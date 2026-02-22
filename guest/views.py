@@ -28,7 +28,7 @@ def user_registration(request):
         )
         user.save()
 
-        messages.success(request, "User registered successfully")
+        messages.success(request, "User registered successfully. Please wait for admin approval.")
         return redirect('guest:user_registration')
 
     return render(request,'Guest/Newuser.html')

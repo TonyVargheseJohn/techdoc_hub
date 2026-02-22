@@ -9,6 +9,15 @@
 <body>
     <div id="tab">
     <h1 align="center">NEW USER</h1>
+    
+    {% if messages %}
+    <ul class="messages" align="center" style="list-style-type: none; padding: 0;">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{ message.tags }}"{% endif %} style="color: green; font-weight: bold;">{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
     <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
         <form action="" method="post" id="userform" data-place-url="" enctype="multipart/form-data">
             {% csrf_token %}
