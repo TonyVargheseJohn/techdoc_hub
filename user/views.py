@@ -25,6 +25,7 @@ def editprofile(request):
         return redirect("webuser:myprofile")
     else:
         return render(request, "user/Editprofile.html", {'data': data})
+<<<<<<< HEAD
 
 
 
@@ -47,3 +48,5 @@ def viewmachine(request):
         "category": categorydata,
         "machines": machines
     })
+=======
+>>>>>>> 473de94d695a5fc0c04f16fba7be5fa64c0b1633

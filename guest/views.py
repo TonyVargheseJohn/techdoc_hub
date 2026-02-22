@@ -56,8 +56,13 @@ def login(request):
                 email=request.POST.get('email'),
                 password=request.POST.get('password')
             )
-            request.session['uid'] = user.id
-            return redirect("webuser:home")
+            if user.status == 'accepted':
+                request.session['uid'] = user.id
+                return redirect("webuser:home")
+            else:
+                return render(request, "Guest/Login.html", {
+                    "error": "Your account is pending verification or has been rejected."
+                })
 
 
         elif admincount > 0:
