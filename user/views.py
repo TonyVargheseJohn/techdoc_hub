@@ -94,6 +94,8 @@ def viewmachine(request):
     })
 
 
+from django.urls import reverse
+
 def upload_machine_file(request):
     if request.method == "POST":
         machine_id = request.POST.get("machine_id")
@@ -109,6 +111,8 @@ def upload_machine_file(request):
             machine=machine,
             file=file
         )
+        url = f"{reverse('webuser:viewmachine')}?cat={machine.category.id}&machine={machine.id}"
+        return redirect(url)
 
     return redirect("webuser:viewmachine")
 
@@ -131,8 +135,22 @@ def my_uploads(request):
 
     uploads = UserMachineFile.objects.filter(user_id=user_id).select_related("machine")
 
+    search_date = request.GET.get("search_date")
+    search_pdf = request.GET.get("search_pdf")
+    search_machine = request.GET.get("search_machine")
+
+    if search_date:
+        uploads = uploads.filter(upload_date__date=search_date)
+    if search_pdf:
+        uploads = uploads.filter(file__icontains=search_pdf)
+    if search_machine:
+        uploads = uploads.filter(machine__machine_name__icontains=search_machine)
+
     return render(request, "user/MyUploads.html", {
-        "uploads": uploads
+        "uploads": uploads,
+        "search_date": search_date,
+        "search_pdf": search_pdf,
+        "search_machine": search_machine
     })
 
 

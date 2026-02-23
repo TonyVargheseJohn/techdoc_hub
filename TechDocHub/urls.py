@@ -32,7 +32,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 urlpatterns = [
-    path('guest/',include('guest.urls')),
+    path('',include('guest.urls')),
     path('admin/', admin.site.urls),
     path('', include('guest.urls')),
     path('user/', include('user.urls')),

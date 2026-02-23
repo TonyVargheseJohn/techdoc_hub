@@ -1,117 +1,245 @@
-<!DOCTYPE html>
-<html lang="en">
+{% include 'guest/Header.html' %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+<style>
+    .register-wrapper {
+        position: relative;
+        padding: 4rem 1rem;
+        min-height: calc(100vh - 76px);
+        /* Accounting for navbar */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        overflow: hidden;
+    }
 
-<body>
-    <div id="tab">
-        <h1 align="center">NEW USER</h1>
+    /* Animated Orbs from Home for Consistency */
+    .bg-orbs {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+    }
 
-        {% if messages %}
-        <style>
-            .modal {
-                display: flex;
-                position: fixed;
-                z-index: 1;
-                left: 0;
-                top: 0;
-                width: 100%;
-                height: 100%;
-                background-color: rgba(0, 0, 0, 0.4);
-                justify-content: center;
-                align-items: center;
-            }
+    .orb {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.5;
+        animation: floatEffect 12s infinite alternate ease-in-out;
+    }
 
-            .modal-content {
-                background-color: #fefefe;
-                padding: 20px;
-                border: 1px solid #888;
-                border-radius: 8px;
-                width: 80%;
-                max-width: 400px;
-                text-align: center;
-                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            }
+    .orb-1 {
+        top: -10%;
+        right: -5%;
+        width: 500px;
+        height: 500px;
+        background: var(--primary-color);
+    }
 
-            .close-btn {
-                background-color: #4CAF50;
-                color: white;
-                padding: 10px 20px;
-                margin-top: 15px;
-                border: none;
-                border-radius: 4px;
-                cursor: pointer;
-            }
+    .orb-2 {
+        bottom: -15%;
+        left: -5%;
+        width: 450px;
+        height: 450px;
+        background: #05CD99;
+        /* using secondary color here */
+        animation-delay: -5s;
+        opacity: 0.3;
+    }
 
-            .close-btn:hover {
-                background-color: #45a049;
-            }
-        </style>
-        <div id="successModal" class="modal">
-            <div class="modal-content">
-                {% for message in messages %}
-                <h3 style="color: green; margin-top: 0;">{{ message }}</h3>
-                {% endfor %}
-                <button class="close-btn"
-                    onclick="document.getElementById('successModal').style.display='none'">OK</button>
+    .register-card-advanced {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border: 1px solid rgba(255, 255, 255, 0.8);
+        border-radius: 24px;
+        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+        overflow: hidden;
+        max-width: 800px;
+        width: 100%;
+        position: relative;
+        z-index: 1;
+        animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+        padding: 3.5rem;
+    }
+
+    .form-control,
+    .form-select {
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        border: 2px solid #eef0f8;
+        background: #fbfbfc;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        height: auto;
+    }
+
+    .form-control:focus,
+    .form-select:focus {
+        background: white;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
+    }
+
+    .form-floating label {
+        color: #8f9bba;
+        font-weight: 500;
+        padding-left: 1rem;
+    }
+
+    .form-floating>.form-control,
+    .form-floating>.form-select {
+        height: 3.5rem;
+        line-height: 1.25;
+    }
+
+    .btn-register-submit {
+        background: var(--primary-color);
+        color: white;
+        border-radius: 14px;
+        padding: 1rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        border: none;
+        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
+    }
+
+    .btn-register-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 15px 25px rgba(67, 24, 255, 0.35);
+        background: var(--primary-hover);
+        color: white;
+    }
+
+    .header-icon {
+        background: linear-gradient(135deg, rgba(67, 24, 255, 0.1) 0%, rgba(51, 17, 219, 0.05) 100%);
+        color: var(--primary-color);
+        width: 70px;
+        height: 70px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2rem;
+        margin: 0 auto 1.5rem auto;
+        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.05);
+    }
+</style>
+
+<div class="register-wrapper">
+    <div class="bg-orbs">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="register-card-advanced">
+
+                    <div class="text-center mb-5">
+                        <div class="header-icon">
+                            <i class="fa-solid fa-user-plus"></i>
+                        </div>
+                        <h3 class="fw-bold text-dark mb-2 display-6" style="font-size: 2.2rem;">Create Your Account</h3>
+                        <p class="text-muted">Join TechDoc Hub and streamline your document workflow.</p>
+                    </div>
+
+                    {% if msg %}
+                    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4"
+                        style="background-color: #e6f9f0; color: #02946c;" role="alert">
+                        <i class="fa-solid fa-circle-check me-2"></i> {{ msg }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <script>
+                        setTimeout(function () {
+                            window.location.href = "{% url 'guest:login' %}";
+                        }, 2500);
+                    </script>
+                    {% endif %}
+
+                    <form method="post" action="" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row g-3">
+                            <!-- First Name & Last Name -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" name="txtname" id="firstName"
+                                        placeholder="First Name" required title="Must contain only letters"
+                                        pattern="^[a-zA-Z\s]+$">
+                                    <label for="firstName">First Name</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control" name="txtmail" id="email"
+                                        placeholder="Email Address" required>
+                                    <label for="email">Email Address</label>
+                                </div>
+                            </div>
+
+                            <!-- Contact & Gender -->
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" name="txtcontact" id="contact"
+                                        placeholder="Contact Number" required title="Must contain exactly 10 digits"
+                                        pattern="[0-9]{10}">
+                                    <label for="contact">Contact Number</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <select class="form-select" name="sel_gender" id="gender" required>
+                                        <option value="" selected disabled>Select Gender</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Others">Others</option>
+                                    </select>
+                                    <label for="gender">Gender</label>
+                                </div>
+                            </div>
+
+                            <!-- Address (Full Width) -->
+                            <div class="col-12">
+                                <div class="form-floating mb-3">
+                                    <textarea class="form-control" name="txtaddr" id="address"
+                                        placeholder="Residential Address" style="height: 100px" required></textarea>
+                                    <label for="address">Residential Address</label>
+                                </div>
+                            </div>
+
+                            <!-- Password -->
+                            <div class="form-text small text-muted">Must be at least 8 characters, with uppercase,
+                                lowercase & numbers.</div>
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-grid gap-2 mb-3">
+                            <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm" type="submit"
+                                name="btn">Register Account</button>
+                        </div>
+                        <div class="text-center">
+                            <button type="reset" class="btn btn-link text-muted text-decoration-none btn-sm"
+                                name="btnc">Clear Form</button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+            <!-- Card End -->
+
+            <div class="text-center mt-4">
+                <p class="text-muted">Already have an account? <a href="{% url 'guest:login' %}"
+                        class="fw-bold text-primary text-decoration-none">Sign in here</a></p>
             </div>
         </div>
-        {% endif %}
-
-        <table border="2" align="center" cellpadding="10" style="border-collapse: collapse;">
-            <form action="" method="post" id="userform" data-place-url="" enctype="multipart/form-data">
-                {% csrf_token %}
-                <tr>
-                    <td>Name</td>
-                    <td><input type="text" name="name" autocomplete="off" placeholder="Enter Name" required=""></td>
-                </tr>
-                <tr>
-                    <td>Contact</td>
-                    <td><input type="number" name="contact" required="" autocomplete="off" placeholder="0123456789"
-                            pattern="[0-9]{10}" required=""></td>
-                </tr>
-                <tr>
-                    <td>EmployeeID</td>
-                    <td><input type="number" name="employeid" required="" autocomplete="off" placeholder="0123456789"
-                            pattern="[0-9]{10}" required=""></td>
-                </tr>
-                <tr>
-                    <td>Email</td>
-                    <td><input type="email" name="email" autocomplete="off" pattern="[^ @]*@[^ @]*"
-                            placeholder="Enter Email" id="email" required=""></td>
-                </tr>
-                <tr>
-                    <td>Gender
-                    </td>
-                    <td><input type="radio" name="gender" value="male" id="" required="" autocomplete="off">Male <input
-                            type="radio" name="gender" value="female">Female</td>
-                </tr>
-                <tr>
-                    <td>photo</td>
-                    <td><input type="file" name="photo" required="" autocomplete="off"></td>
-                </tr>
-
-                <tr>
-                    <td>Password</td>
-                    <td><input type="password" name="password" placeholder="Enter Password"
-                            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
-                            title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
-                            required></td>
-                </tr>
-                <tr>
-                    <td colspan="2" align="center"><input type="submit" value="save" name="btn">
-                        <input type="reset" value="cancel" name="btnc">
-                    </td>
-
-                </tr>
-        </table>
-        </form>
     </div>
-</body>
+</div>
+</div>
 
-</html>
+{% include 'guest/Footer.html' %}

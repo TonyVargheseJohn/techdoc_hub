@@ -7,6 +7,38 @@
     </div>
 </div>
 
+<div class="row justify-content-center mb-4">
+    <div class="col-lg-11">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <form method="GET" action="{% url 'webuser:my_uploads' %}" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="search_date" class="form-label">Search by Date</label>
+                        <input type="date" class="form-control" id="search_date" name="search_date"
+                            value="{{ search_date|default_if_none:'' }}">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="search_pdf" class="form-label">Search by PDF Name</label>
+                        <input type="text" class="form-control" id="search_pdf" name="search_pdf"
+                            placeholder="Enter PDF name" value="{{ search_pdf|default_if_none:'' }}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="search_machine" class="form-label">Search by Machine</label>
+                        <input type="text" class="form-control" id="search_machine" name="search_machine"
+                            placeholder="Enter machine name" value="{{ search_machine|default_if_none:'' }}">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                        <button type="submit" class="btn btn-primary w-100 shadow-sm"><i
+                                class="fa-solid fa-magnifying-glass me-2"></i>Search</button>
+                        <a href="{% url 'webuser:my_uploads' %}" class="btn btn-outline-secondary w-100 ms-2 shadow-sm"
+                            title="Clear Search"><i class="fa-solid fa-rotate-right"></i></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class="row justify-content-center">
     <div class="col-lg-11">
         <div class="card shadow-sm border-0 mb-5">
