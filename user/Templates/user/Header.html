@@ -240,6 +240,17 @@
                         </ul>
                     </li>
 
+                    <li class="nav-item ms-2 align-self-center d-none d-lg-block">
+                        <form class="d-flex" method="GET" action="{% url 'webuser:search_uploads' %}">
+                            <input class="form-control form-control-sm me-1 shadow-sm" type="search" name="search_query"
+                                placeholder="Global Search..."
+                                style="border-radius: 20px; padding: 5px 15px; width: 150px; border: 1px solid #cbd5e1;">
+                            <button class="btn btn-sm btn-primary-custom" type="submit"
+                                style="padding: 5px 12px; border-radius: 20px; box-shadow: none;"><i
+                                    class="fa-solid fa-search"></i></button>
+                        </form>
+                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link nav-logout" href="{% url 'guest:login' %}"><i
                                 class="fa-solid fa-right-from-bracket"></i> Logout</a>

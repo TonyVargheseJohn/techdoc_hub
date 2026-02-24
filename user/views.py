@@ -173,3 +173,35 @@ def my_notifications(request):
     notes = Notification.objects.filter(user_id=uid).order_by("-created_at")
 
     return render(request,"user/Notifications.html",{"notes":notes})
+
+def search_uploads(request):
+    user_id = request.session.get("uid")
+    if not user_id:
+        return redirect("guest:login")
+
+    # Exclude files uploaded by the current user
+    uploads = UserMachineFile.objects.exclude(user_id=user_id).select_related("machine", "user")
+
+    search_date = request.GET.get("search_date")
+    search_pdf = request.GET.get("search_pdf")
+    search_machine = request.GET.get("search_machine")
+    search_query = request.GET.get("search_query")  # From navbar quick search
+
+    if search_query:
+        # Simple global search from navbar
+        uploads = uploads.filter(file__icontains=search_query) | uploads.filter(machine__machine_name__icontains=search_query)
+    
+    if search_date:
+        uploads = uploads.filter(upload_date__date=search_date)
+    if search_pdf:
+        uploads = uploads.filter(file__icontains=search_pdf)
+    if search_machine:
+        uploads = uploads.filter(machine__machine_name__icontains=search_machine)
+
+    return render(request, "user/SearchUploads.html", {
+        "uploads": uploads,
+        "search_date": search_date,
+        "search_pdf": search_pdf,
+        "search_machine": search_machine,
+        "search_query": search_query
+    })

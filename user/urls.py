@@ -12,8 +12,5 @@ urlpatterns = [
     path("myuploads/", views.my_uploads, name="my_uploads"),
     path("delete-upload/<int:id>/", views.delete_upload, name="delete_upload"),
     path("notifications/", views.my_notifications, name="notifications"),
-
-   
-
-    
+    path("search-uploads/", views.search_uploads, name="search_uploads"),
 ]
