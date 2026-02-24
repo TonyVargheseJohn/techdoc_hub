@@ -1,94 +1,84 @@
 {% include 'guest/Header.html' %}
 
 <style>
+    body {
+        background-color: #f4f7fe;
+        /* Match Login Background */
+        background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
     .register-wrapper {
-        position: relative;
         padding: 4rem 1rem;
         min-height: calc(100vh - 76px);
-        /* Accounting for navbar */
         display: flex;
         align-items: center;
         justify-content: center;
-        background: transparent;
-        overflow: hidden;
-    }
-
-    /* Animated Orbs from Home for Consistency */
-    .bg-orbs {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
-
-    .orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.5;
-        animation: floatEffect 12s infinite alternate ease-in-out;
-    }
-
-    .orb-1 {
-        top: -10%;
-        right: -5%;
-        width: 500px;
-        height: 500px;
-        background: var(--primary-color);
-    }
-
-    .orb-2 {
-        bottom: -15%;
-        left: -5%;
-        width: 450px;
-        height: 450px;
-        background: #05CD99;
-        /* using secondary color here */
-        animation-delay: -5s;
-        opacity: 0.3;
     }
 
     .register-card-advanced {
-        background: rgba(255, 255, 255, 0.7);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 24px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
-        overflow: hidden;
-        max-width: 800px;
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        /* Centralized width, slightly larger than login for columns */
         width: 100%;
-        position: relative;
-        z-index: 1;
-        animation: fadeInUp 0.8s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-        padding: 3.5rem;
+        animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
+    }
+
+    .card-header-auth {
+        padding: 2.5rem 2.5rem 1rem;
+        text-align: center;
+    }
+
+    .auth-icon-wrapper {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
+        transform: rotate(-5deg);
+        transition: transform 0.3s ease;
+    }
+
+    .register-card-advanced:hover .auth-icon-wrapper {
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    .form-panel {
+        padding: 1rem 2.5rem 2.5rem;
     }
 
     .form-control,
     .form-select {
         border-radius: 12px;
-        padding: 0.8rem 1rem;
-        border: 2px solid #eef0f8;
-        background: #fbfbfc;
+        padding: 0.8rem 1.2rem;
+        border: 2px solid #f1f5f9;
+        background: #f8fafc;
         transition: all 0.3s ease;
         font-size: 0.95rem;
+        font-weight: 500;
+        color: #334155;
         height: auto;
     }
 
     .form-control:focus,
     .form-select:focus {
         background: white;
-        border-color: var(--primary-color);
+        border-color: #4318FF;
         box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
+        transform: translateY(-2px);
     }
 
     .form-floating label {
-        color: #8f9bba;
+        color: #94a3b8;
         font-weight: 500;
-        padding-left: 1rem;
+        padding-left: 0.5rem;
     }
 
     .form-floating>.form-control,
@@ -98,148 +88,147 @@
     }
 
     .btn-register-submit {
-        background: var(--primary-color);
+        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
         color: white;
-        border-radius: 14px;
+        border-radius: 12px;
         padding: 1rem;
-        font-weight: 600;
-        font-size: 1.1rem;
+        font-weight: 700;
+        font-size: 1.05rem;
         transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
         border: none;
-        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
+        box-shadow: 0 8px 16px rgba(67, 24, 255, 0.25);
+        letter-spacing: 0.5px;
     }
 
     .btn-register-submit:hover {
         transform: translateY(-3px);
-        box-shadow: 0 15px 25px rgba(67, 24, 255, 0.35);
-        background: var(--primary-hover);
+        box-shadow: 0 12px 20px rgba(67, 24, 255, 0.35);
         color: white;
-    }
-
-    .header-icon {
-        background: linear-gradient(135deg, rgba(67, 24, 255, 0.1) 0%, rgba(51, 17, 219, 0.05) 100%);
-        color: var(--primary-color);
-        width: 70px;
-        height: 70px;
-        border-radius: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2rem;
-        margin: 0 auto 1.5rem auto;
-        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.05);
     }
 </style>
 
 <div class="register-wrapper">
-    <div class="bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-    </div>
-
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-12">
+            <div class="col-12 d-flex justify-content-center">
                 <div class="register-card-advanced">
 
-                    <div class="text-center mb-5">
-                        <div class="header-icon">
-                            <i class="fa-solid fa-user-plus"></i>
+                    <div class="card-header-auth">
+                        <div class="auth-icon-wrapper">
+                            <i class="fa-solid fa-user-plus text-white fs-4"></i>
                         </div>
-                        <h3 class="fw-bold text-dark mb-2 display-6" style="font-size: 2.2rem;">Create Your Account</h3>
-                        <p class="text-muted">Join TechDoc Hub and streamline your document workflow.</p>
+                        <h3 class="fw-bold text-dark mb-1 h2">Create Account</h3>
+                        <p class="text-muted small">Join TechDoc Hub and streamline your workflow.</p>
                     </div>
 
-                    {% if msg %}
-                    <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4"
-                        style="background-color: #e6f9f0; color: #02946c;" role="alert">
-                        <i class="fa-solid fa-circle-check me-2"></i> {{ msg }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    <div class="form-panel">
+                        {% if msg %}
+                        <div class="alert alert-success alert-dismissible fade show rounded-3 border-0 shadow-sm mb-4 py-2 px-3 small"
+                            style="background-color: #e6f9f0; color: #02946c;" role="alert">
+                            <i class="fa-solid fa-circle-check me-2"></i> {{ msg }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                                style="padding: 0.8rem;"></button>
+                        </div>
+                        <script>
+                            setTimeout(function () {
+                                window.location.href = "{% url 'guest:login' %}";
+                            }, 2500);
+                        </script>
+                        {% endif %}
+
+                        <form method="post" action="" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="row g-2">
+                                <!-- First Name & Employee ID -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="name" id="name"
+                                            placeholder="Full Name" required title="Must contain only letters"
+                                            pattern="^[a-zA-Z\s]+$">
+                                        <label for="name">Full Name</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="employeid" id="employeid"
+                                            placeholder="Employee ID" required>
+                                        <label for="employeid">Employee ID</label>
+                                    </div>
+                                </div>
+
+                                <!-- Email & Contact -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="email" class="form-control" name="email" id="email"
+                                            placeholder="Email Address" required>
+                                        <label for="email">Email Address</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control" name="contact" id="contact"
+                                            placeholder="Contact Number" required title="Must contain exactly 10 digits"
+                                            pattern="[0-9]{10}">
+                                        <label for="contact">Contact Number</label>
+                                    </div>
+                                </div>
+
+                                <!-- Gender & Photo -->
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select class="form-select" name="gender" id="gender" required>
+                                            <option value="" selected disabled>Select Gender</option>
+                                            <option value="Male">Male</option>
+                                            <option value="Female">Female</option>
+                                            <option value="Others">Others</option>
+                                        </select>
+                                        <label for="gender">Gender</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="mb-3">
+                                        <label for="photo" class="form-label small text-muted ms-2 mb-1 fw-bold">Upload
+                                            Profile Photo</label>
+                                        <input type="file" class="form-control border-2" name="photo" id="photo"
+                                            accept="image/*" required style="padding: 0.6rem 1rem;">
+                                    </div>
+                                </div>
+
+                                <!-- Password (Full Width) -->
+                                <div class="col-12">
+                                    <div class="form-floating mb-1">
+                                        <input type="password" class="form-control" name="password" id="password"
+                                            placeholder="Password" required minlength="8">
+                                        <label for="password">Password</label>
+                                    </div>
+                                    <div class="form-text small text-muted ms-2 mt-0">Must be at least 8 characters.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Buttons -->
+                            <div class="d-grid gap-2 mb-3">
+                                <button class="btn btn-register-submit w-100 mb-2" type="submit" name="btn">Register
+                                    Account</button>
+                            </div>
+                            <div class="text-center">
+                                <button type="reset" class="btn btn-link text-muted text-decoration-none btn-sm"
+                                    name="btnc">Clear Form</button>
+                            </div>
+
+                        </form>
                     </div>
-                    <script>
-                        setTimeout(function () {
-                            window.location.href = "{% url 'guest:login' %}";
-                        }, 2500);
-                    </script>
-                    {% endif %}
-
-                    <form method="post" action="" enctype="multipart/form-data">
-                        {% csrf_token %}
-                        <div class="row g-3">
-                            <!-- First Name & Last Name -->
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="txtname" id="firstName"
-                                        placeholder="First Name" required title="Must contain only letters"
-                                        pattern="^[a-zA-Z\s]+$">
-                                    <label for="firstName">First Name</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="email" class="form-control" name="txtmail" id="email"
-                                        placeholder="Email Address" required>
-                                    <label for="email">Email Address</label>
-                                </div>
-                            </div>
-
-                            <!-- Contact & Gender -->
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <input type="text" class="form-control" name="txtcontact" id="contact"
-                                        placeholder="Contact Number" required title="Must contain exactly 10 digits"
-                                        pattern="[0-9]{10}">
-                                    <label for="contact">Contact Number</label>
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-floating mb-3">
-                                    <select class="form-select" name="sel_gender" id="gender" required>
-                                        <option value="" selected disabled>Select Gender</option>
-                                        <option value="Male">Male</option>
-                                        <option value="Female">Female</option>
-                                        <option value="Others">Others</option>
-                                    </select>
-                                    <label for="gender">Gender</label>
-                                </div>
-                            </div>
-
-                            <!-- Address (Full Width) -->
-                            <div class="col-12">
-                                <div class="form-floating mb-3">
-                                    <textarea class="form-control" name="txtaddr" id="address"
-                                        placeholder="Residential Address" style="height: 100px" required></textarea>
-                                    <label for="address">Residential Address</label>
-                                </div>
-                            </div>
-
-                            <!-- Password -->
-                            <div class="form-text small text-muted">Must be at least 8 characters, with uppercase,
-                                lowercase & numbers.</div>
-                        </div>
-
-                        <!-- Buttons -->
-                        <div class="d-grid gap-2 mb-3">
-                            <button class="btn btn-primary btn-lg rounded-pill fw-bold shadow-sm" type="submit"
-                                name="btn">Register Account</button>
-                        </div>
-                        <div class="text-center">
-                            <button type="reset" class="btn btn-link text-muted text-decoration-none btn-sm"
-                                name="btnc">Clear Form</button>
-                        </div>
-
-                    </form>
                 </div>
-            </div>
-            <!-- Card End -->
+                <!-- Card End -->
 
-            <div class="text-center mt-4">
-                <p class="text-muted">Already have an account? <a href="{% url 'guest:login' %}"
-                        class="fw-bold text-primary text-decoration-none">Sign in here</a></p>
+                <div class="text-center mt-3">
+                    <p class="text-muted small fw-medium">Already have an account? <a href="{% url 'guest:login' %}"
+                            class="fw-bold text-decoration-none" style="color: #4318FF;">Sign in here</a></p>
+                </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 {% include 'guest/Footer.html' %}

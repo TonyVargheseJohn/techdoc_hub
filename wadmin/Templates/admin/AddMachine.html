@@ -59,7 +59,7 @@
 
 
 
-            <thead>
+            <thead class="text-center">
                 <tr>
                     <th>Sl.No</th>
                     <th>Category</th>
@@ -107,7 +107,7 @@
                         {% endif %}
                     </td>
                     <td>
-                        <div class="btn-group shadow-sm">
+                        <div class="d-flex justify-content-center gap-2 shadow-sm">
                             <a href="{% url 'wadmin:editmachine' i.id %}" class="btn btn-sm btn-outline-primary"><i
                                     class="fa-solid fa-pen-to-square"></i></a>
                             <a href="{% url 'wadmin:deletemachine' i.id %}" class="btn btn-sm btn-outline-danger"><i

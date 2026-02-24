@@ -2,7 +2,9 @@
 
 <div class="row justify-content-center mb-4">
     <div class="col-12 text-center">
-        <h2 class="fw-bold mb-0">All Uploaded Files</h2>
+        <h2 class="fw-bold mb-1"
+            style="background: linear-gradient(135deg, var(--primary), var(--primary-dark)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;">
+            All Uploaded Files</h2>
         <p class="text-muted">Review and manage documentation files uploaded by users.</p>
     </div>
 </div>
@@ -10,102 +12,115 @@
 <div class="card shadow-sm border-0 mb-5">
     <div class="card-body p-0 table-responsive">
         <table class="table table-custom table-hover m-0 w-100 text-center align-middle">
-
-            <table border="1" align="center" cellpadding="10" width="95%">
+            <thead class="text-center">
                 <tr>
-                    <th>Sl.No</th>
+                    <th>#</th>
                     <th>Category</th>
                     <th>Machine</th>
-                    <th>User</th>
+                    <th>Uploaded By</th>
                     <th>File</th>
                     <th>Date</th>
                     <th>Action</th>
                 </tr>
-
+            </thead>
+            <tbody>
                 {% for f in files %}
                 <tr>
-                    <td>{{forloop.counter}}</td>
+                    <td class="fw-bold text-muted">{{forloop.counter}}</td>
                     <td><span class="badge bg-secondary">{{f.machine.category.category_name}}</span></td>
                     <td class="fw-bold text-primary">{{f.machine.machine_name}}</td>
-                    <td>{{f.user.name}}</td>
                     <td>
-                        <div class="btn-group shadow-sm">
-                            <a href="{{f.file.url}}" target="_blank" class="btn btn-sm btn-outline-info"><i
-                                    class="fa-solid fa-eye"></i></a>
-                            <a href="{{f.file.url}}" download class="btn btn-sm btn-outline-success"><i
-                                    class="fa-solid fa-download"></i></a>
+                        <span class="badge"
+                            style="background: rgba(79,70,229,0.12); color: var(--primary); font-weight: 600;">
+                            <i class="fa-solid fa-user me-1"></i>{{f.user.name}}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{{f.file.url}}" target="_blank" class="btn btn-sm btn-outline-info shadow-sm"
+                                title="View">
+                                <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="{{f.file.url}}" download class="btn btn-sm btn-outline-success shadow-sm"
+                                title="Download">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
                         </div>
                     </td>
-                    <td class="text-muted small">{{f.upload_date}}</td>
-
                     <td>
-                        <button class="btn btn-sm btn-danger shadow-sm" onclick="showDeleteBox({{f.id}})"><i
-                                class="fa-solid fa-trash"></i> Delete</button>
+                        <span class="badge bg-light text-dark border">
+                            <i class="fa-regular fa-calendar me-1"></i>{{f.upload_date}}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="showDeleteBox({{f.id}})">
+                            <i class="fa-solid fa-trash me-1"></i> Delete
+                        </button>
 
-                        <div id="deleteBox{{f.id}}" class="modal">
-                            <div class="modal-content">
-                                <h3 style="margin-top: 0;">Confirm Deletion</h3>
+                        <!-- Delete Modal -->
+                        <div id="deleteBox{{f.id}}" class="custom-modal-overlay">
+                            <div class="custom-modal-box">
+                                <div class="text-center mb-3">
+                                    <div
+                                        style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 12px;">
+                                        <i class="fa-solid fa-trash-can text-danger" style="font-size:1.6rem;"></i>
+                                    </div>
+                                    <h5 class="fw-bold mb-1">Confirm Deletion</h5>
+                                    <p class="text-muted small">Please state the reason for deleting this file.</p>
+                                </div>
                                 <form method="post" action="{% url 'wadmin:delete_uploaded_file' f.id %}">
                                     {% csrf_token %}
-                                    <textarea name="reason" placeholder="Enter reason for deletion..." rows="3"
-                                        style="width: 90%; margin-bottom: 15px; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"
-                                        required></textarea>
-                                    <br>
-                                    <button type="submit"
-                                        style="background-color: #dc3545; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px;">Confirm</button>
-                                    <button type="button" onclick="hideDeleteBox({{f.id}})"
-                                        style="background-color: #6c757d; color: white; border: none; padding: 8px 15px; cursor: pointer; border-radius: 4px;">Cancel</button>
+                                    <textarea name="reason" class="form-control mb-3"
+                                        placeholder="Enter reason for deletion..." rows="3" required></textarea>
+                                    <div class="d-flex gap-2">
+                                        <button type="submit" class="btn btn-danger flex-fill"><i
+                                                class="fa-solid fa-check me-1"></i> Confirm</button>
+                                        <button type="button" class="btn btn-secondary flex-fill"
+                                            onclick="hideDeleteBox({{f.id}})"><i class="fa-solid fa-xmark me-1"></i>
+                                            Cancel</button>
+                                    </div>
                                 </form>
                             </div>
                         </div>
                     </td>
-
                 </tr>
                 {% empty %}
                 <tr>
-                    <td colspan="7" align="center">No uploaded files found</td>
+                    <td colspan="7" class="text-center text-muted py-5">
+                        <i class="fa-solid fa-cloud-arrow-up mb-2 text-primary" style="font-size: 2.5rem;"></i><br>
+                        No uploaded files found.
+                    </td>
                 </tr>
                 {% endfor %}
-
-            </table>
+            </tbody>
+        </table>
     </div>
 </div>
 
-<script>
-    function showDeleteBox(id) {
-        document.getElementById('deleteBox' + id).style.display = 'block';
-    }
-    function hideDeleteBox(id) {
-        document.getElementById('deleteBox' + id).style.display = 'none';
-    }
-</script>
-
 <style>
-    .modal {
+    .custom-modal-overlay {
         display: none;
         position: fixed;
-        z-index: 1050;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        justify-content: center;
+        z-index: 1055;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(6px);
         align-items: center;
-        backdrop-filter: blur(4px);
+        justify-content: center;
     }
 
-    .modal-content {
-        background-color: #fff;
-        margin: 15% auto;
-        padding: 25px;
-        border: none;
-        width: 400px;
-        text-align: center;
-        border-radius: 12px;
-        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-        font-family: 'Inter', sans-serif;
-        animation: slideDown 0.3s ease-out;
+    .custom-modal-overlay.show {
+        display: flex;
+    }
+
+    .custom-modal-box {
+        background: white;
+        border-radius: 20px;
+        padding: 32px;
+        width: 420px;
+        max-width: 95vw;
+        box-shadow: 0 24px 60px rgba(0, 0, 0, 0.2);
+        animation: slideDown 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
     }
 
     @keyframes slideDown {
@@ -120,6 +135,15 @@
         }
     }
 </style>
+
+<script>
+    function showDeleteBox(id) {
+        document.getElementById('deleteBox' + id).classList.add('show');
+    }
+    function hideDeleteBox(id) {
+        document.getElementById('deleteBox' + id).classList.remove('show');
+    }
+</script>
 
 </div><!-- End .admin-container -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

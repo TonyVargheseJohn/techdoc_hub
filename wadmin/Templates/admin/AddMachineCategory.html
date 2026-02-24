@@ -28,7 +28,7 @@
 
 
 
-            <thead>
+            <thead class="text-center">
                 <tr>
                     <th>Sl.No</th>
                     <th>Category</th>
@@ -42,11 +42,13 @@
                     <td>{{forloop.counter}}</td>
                     <td class="fw-bold text-primary">{{i.category_name}}</td>
                     <td>
-                        <a href="{% url 'wadmin:editcategory' i.id %}"
-                            class="btn btn-sm btn-outline-primary shadow-sm"><i
-                                class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="{% url 'wadmin:deletecategory' i.id %}"
-                            class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i></a>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{% url 'wadmin:editcategory' i.id %}"
+                                class="btn btn-sm btn-outline-primary shadow-sm"><i
+                                    class="fa-solid fa-pen-to-square"></i></a>
+                            <a href="{% url 'wadmin:deletecategory' i.id %}"
+                                class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i></a>
+                        </div>
                     </td>
                 </tr>
                 {% endfor %}

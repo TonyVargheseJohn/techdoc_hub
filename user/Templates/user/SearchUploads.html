@@ -32,12 +32,14 @@
                     <input type="hidden" name="search_query" value="{{ search_query }}">
                     {% endif %}
 
-                    <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100 shadow-sm"><i
-                                class="fa-solid fa-magnifying-glass me-2"></i>Search</button>
-                        <a href="{% url 'webuser:search_uploads' %}"
-                            class="btn btn-outline-secondary w-100 ms-2 shadow-sm" title="Clear Search"><i
-                                class="fa-solid fa-rotate-right"></i></a>
+                    <div class="col-md-2 d-flex align-items-end gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1 shadow-sm">
+                            <i class="fa-solid fa-magnifying-glass me-1"></i> Search
+                        </button>
+                        <a href="{% url 'webuser:search_uploads' %}" class="btn btn-outline-secondary shadow-sm"
+                            title="Clear Search">
+                            <i class="fa-solid fa-rotate-right"></i>
+                        </a>
                     </div>
                 </form>
             </div>
@@ -71,11 +73,15 @@
                             <td><span class="badge bg-light text-dark border"><i
                                         class="fa-regular fa-calendar me-1"></i> {{f.upload_date}}</span></td>
                             <td>
-                                <div class="btn-group shadow-sm">
-                                    <a href="{{f.file.url}}" target="_blank" class="btn btn-sm btn-outline-info"
-                                        title="View"><i class="fa-solid fa-eye me-1"></i> View</a>
-                                    <a href="{{f.file.url}}" download class="btn btn-sm btn-outline-success"
-                                        title="Download"><i class="fa-solid fa-download me-1"></i> Download</a>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{f.file.url}}" target="_blank"
+                                        class="btn btn-sm btn-outline-info shadow-sm" title="View">
+                                        <i class="fa-solid fa-eye me-1"></i> View
+                                    </a>
+                                    <a href="{{f.file.url}}" download class="btn btn-sm btn-outline-success shadow-sm"
+                                        title="Download">
+                                        <i class="fa-solid fa-download me-1"></i> Download
+                                    </a>
                                 </div>
                             </td>
                         </tr>

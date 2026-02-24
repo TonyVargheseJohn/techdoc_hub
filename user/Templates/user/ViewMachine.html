@@ -159,11 +159,15 @@
                             </td>
                             <td><span class="badge bg-light text-dark border">{{f.upload_date}}</span></td>
                             <td>
-                                <div class="btn-group shadow-sm">
-                                    <a href="{{f.file.url}}" target="_blank" class="btn btn-sm btn-outline-info"><i
-                                            class="fa-solid fa-eye"></i></a>
+                                <div class="d-flex justify-content-center gap-2">
+                                    <a href="{{f.file.url}}" target="_blank"
+                                        class="btn btn-sm btn-outline-info shadow-sm" title="View">
+                                        <i class="fa-solid fa-eye"></i>
+                                    </a>
                                     <a href="{% url 'webuser:download_file' f.id %}"
-                                        class="btn btn-sm btn-outline-success"><i class="fa-solid fa-download"></i></a>
+                                        class="btn btn-sm btn-outline-success shadow-sm" title="Download">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

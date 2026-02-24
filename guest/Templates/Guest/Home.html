@@ -5,54 +5,7 @@
         position: relative;
         padding: 6rem 0;
         overflow: hidden;
-        background: transparent;
-    }
-
-    /* Abstract background animated orbs */
-    .hero-bg {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        overflow: hidden;
-    }
-
-    .orb {
-        position: absolute;
-        border-radius: 50%;
-        filter: blur(80px);
-        opacity: 0.6;
-        animation: floatEffect 10s infinite alternate ease-in-out;
-    }
-
-    .orb-1 {
-        top: -10%;
-        left: -10%;
-        width: 500px;
-        height: 500px;
-        background: #4318FF;
-        animation-delay: 0s;
-    }
-
-    .orb-2 {
-        bottom: -20%;
-        right: -10%;
-        width: 600px;
-        height: 600px;
-        background: #05CD99;
-        animation-delay: -5s;
-    }
-
-    .orb-3 {
-        top: 40%;
-        left: 40%;
-        width: 400px;
-        height: 400px;
-        background: #FFB547;
-        opacity: 0.3;
-        animation: floatEffect 15s infinite alternate-reverse ease-in-out;
+        background: #f8fafc;
     }
 
     .display-1 {
@@ -119,12 +72,10 @@
     }
 
     .glass-card-main {
-        background: rgba(255, 255, 255, 0.4);
-        backdrop-filter: blur(40px);
-        -webkit-backdrop-filter: blur(40px);
-        border: 1px solid rgba(255, 255, 255, 0.8);
-        border-radius: 30px;
-        box-shadow: 0 30px 60px rgba(0, 0, 0, 0.08);
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
         padding: 3rem;
         display: flex;
         justify-content: center;
@@ -256,12 +207,6 @@
 
 <!-- Hero Section -->
 <section class="hero-section content-container d-flex align-items-center">
-    <div class="hero-bg">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
     <div class="container">
         <div class="row align-items-center min-vh-75">
             <div class="col-lg-6 text-center text-lg-start mb-5 mb-lg-0 mt-4 mt-lg-0">
