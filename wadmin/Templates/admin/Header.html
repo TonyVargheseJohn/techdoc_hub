@@ -507,15 +507,15 @@
                 <ul class="navbar-nav align-items-center">
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'wadmin:Home' %}"><i
-                                class="fa-solid fa-house-chimney me-1"></i> Dashboard</a>
+                                class="fa-solid fa-house-chimney me-1"></i> Home</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-users me-1"></i> Users
+                            <i class="fa-solid fa-users me-1"></i> Manage Users
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'wadmin:newusers' %}"><i
-                                        class="fa-solid fa-user-plus me-2 text-primary"></i>New Requests</a></li>
+                                        class="fa-solid fa-user-plus me-2 text-primary"></i>New User  Requests</a></li>
                             <li><a class="dropdown-item" href="{% url 'wadmin:acceptedusers' %}"><i
                                         class="fa-solid fa-user-check me-2 text-success"></i>Accepted Users</a></li>
                             <li><a class="dropdown-item" href="{% url 'wadmin:rejectedusers' %}"><i
@@ -524,31 +524,48 @@
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-gears me-1"></i> Machines
+                            <i class="fa-solid fa-gears me-1"></i>Manage Machines
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="{% url 'wadmin:addcategory' %}"><i
-                                        class="fa-solid fa-layer-group me-2 text-info"></i>Categories</a></li>
+                                        class="fa-solid fa-layer-group me-2 text-info"></i>Add/View Categories</a></li>
                             <li><a class="dropdown-item" href="{% url 'wadmin:machine' %}"><i
-                                        class="fa-solid fa-toolbox me-2 text-warning"></i>Machine Models</a></li>
+                                        class="fa-solid fa-toolbox me-2 text-warning"></i>Add/View Machine Models</a></li>
                         </ul>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'wadmin:view_uploaded_files' %}"><i
-                                class="fa-solid fa-cloud-arrow-down me-1"></i> Uploads</a>
+                                class="fa-solid fa-cloud-arrow-down me-1"></i>User  Uploads</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'wadmin:announcement' %}"><i
-                                class="fa-solid fa-bullhorn me-1"></i> Announcements</a>
+                                class="fa-solid fa-bullhorn me-1"></i> Add Announcements</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
                             <i class="fa-solid fa-circle-user me-1"></i> Profile
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'wadmin:myprofile' %}"><i
-                                        class="fa-solid fa-id-badge me-2 text-primary"></i>My Profile</a></li>
                             <li>
+    <a class="dropdown-item" href="{% url 'wadmin:myprofile' %}">
+        <i class="fa-solid fa-user me-2 text-primary" style="width:20px;"></i>
+        My Profile
+    </a>
+</li>
+
+<li>
+    <a class="dropdown-item" href="{% url 'wadmin:editprofile' %}">
+        <i class="fa-solid fa-pen-to-square me-2 text-success" style="width:20px;"></i>
+        Edit Profile
+    </a>
+</li>
+
+<li>
+    <a class="dropdown-item" href="{% url 'wadmin:changepassword' %}">
+        <i class="fa-solid fa-lock me-2 text-warning" style="width:20px;"></i>
+        Change Password
+    </a>
+</li>
                                 <hr class="dropdown-divider">
                             </li>
                             <li><a class="dropdown-item text-danger fw-bold" href="{% url 'guest:login' %}"><i

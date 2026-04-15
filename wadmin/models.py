@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 
 # Create your models here.
 
@@ -32,11 +33,20 @@ class Machine(models.Model):
         db_table = 'tbl_machine'
 
 
+
+# class Announcement(models.Model):
+#     title = models.CharField(max_length=200)
+#     description = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+
+#     class Meta:
+#         db_table = 'tbl_announcement'
+
+
 class Announcement(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
-    date = models.DateField(auto_now_add=True)
+    created_at = models.DateTimeField(default=timezone.now)  # <--- Must be DateTimeField
 
-    class Meta:
-        db_table = 'tbl_announcement'
-
+    def __str__(self):
+        return self.title

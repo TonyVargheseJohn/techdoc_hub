@@ -1,211 +1,330 @@
 {% include 'admin/Header.html' %}
 
 <div class="row mb-5 justify-content-center">
-    <div class="col-lg-8">
-        <div class="card shadow-sm border-0 p-4">
-            <h3 class="mb-4 fw-bold text-center">Add Machine Model</h3>
-            <form action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Category</label>
-                        <select class="form-select" name="category" required>
-                            <option value="">--Select Category--</option>
-                            {% for c in category %}
-                            <option value="{{c.id}}" {% if machine.category.id == c.id %}selected{% endif %}>
-                                {{c.category_name}}
-                            </option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                    <div class="col-md-6">
-                        <label class="form-label fw-bold">Machine Name</label>
-                        <input type="text" class="form-control" name="machine" value="{{machine.machine_name}}"
-                            placeholder="Enter Machine Name" required>
-                    </div>
-                    <div class="col-12">
-                        <label class="form-label fw-bold">Description</label>
-                        <textarea class="form-control" name="description" rows="3"
-                            required>{{machine.description}}</textarea>
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Image</label>
-                        <input type="file" class="form-control" name="image" accept="image/*">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Spare Manual (PDF)</label>
-                        <input type="file" class="form-control" name="spare_manual" accept="application/pdf">
-                    </div>
-                    <div class="col-md-4">
-                        <label class="form-label fw-bold">Software File (PDF)</label>
-                        <input type="file" class="form-control" name="software_file" accept="application/pdf">
-                    </div>
-                    <div class="col-12 text-center mt-4">
-                        <button type="submit" class="btn btn-primary-custom px-4"><i class="fa-solid fa-save"></i> Save
-                            Machine</button>
-                        <button type="reset" class="btn btn-secondary px-4"><i class="fa-solid fa-rotate-left"></i>
-                            Cancel</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="col-lg-8">
+<div class="card shadow-sm border-0 p-4">
+
+<h3 class="mb-4 fw-bold text-center">
+{% if machine %}Edit Machine Model{% else %}Add Machine Model{% endif %}
+</h3>
+
+<form action="" method="post" enctype="multipart/form-data">
+{% csrf_token %}
+
+<div class="row g-3">
+
+<div class="col-md-6">
+<label class="form-label fw-bold">Category</label>
+<select class="form-select" name="category" required>
+
+<option value="">--Select Category--</option>
+
+{% for c in category %}
+<option value="{{c.id}}"
+{% if machine and machine.category.id == c.id %}selected{% endif %}>
+{{c.category_name}}
+</option>
+{% endfor %}
+
+</select>
 </div>
+
+<div class="col-md-6">
+<label class="form-label fw-bold">Machine Name</label>
+<input type="text"
+class="form-control"
+name="machine"
+value="{{machine.machine_name|default:''}}"
+placeholder="Enter Machine Name"
+required>
+</div>
+
+<div class="col-12">
+<label class="form-label fw-bold">Description</label>
+<textarea class="form-control"
+name="description"
+rows="3"
+required>{{machine.description|default:''}}</textarea>
+</div>
+
+<div class="col-md-4">
+<label class="form-label fw-bold">Image</label>
+<input type="file" class="form-control" name="image" accept="image/*">
+
+{% if machine and machine.image %}
+<br>
+<img src="{{machine.image.url}}" width="70">
+{% endif %}
+</div>
+
+<div class="col-md-4">
+<label class="form-label fw-bold">Spare Manual (PDF)</label>
+<input type="file" class="form-control" name="spare_manual" accept="application/pdf">
+
+{% if machine and machine.spare_manual %}
+<br>
+<a href="{{machine.spare_manual.url}}" target="_blank">View Current Manual</a>
+{% endif %}
+</div>
+
+<div class="col-md-4">
+<label class="form-label fw-bold">Software File (APK / PDF)</label>
+<input type="file" class="form-control" name="software_file" accept=".apk,.pdf">
+
+{% if machine and machine.software_file %}
+<br>
+<a href="{{machine.software_file.url}}" target="_blank">Open Current File</a>
+{% endif %}
+</div>
+
+<div class="col-12 text-center mt-4">
+
+<button type="submit" class="btn btn-primary-custom px-4">
+{% if machine %}
+<i class="fa-solid fa-pen"></i> Update Machine
+{% else %}
+<i class="fa-solid fa-save"></i> Save Machine
+{% endif %}
+</button>
+
+<button type="reset" class="btn btn-secondary px-4">
+<i class="fa-solid fa-rotate-left"></i> Cancel
+</button>
+
+</div>
+
+</div>
+</form>
+
+</div>
+</div>
+</div>
+
+
+<!-- 🔎 LIVE SEARCH -->
+
+<div class="card shadow-sm border-0 mb-3">
+<div class="card-body">
+
+<input type="text"
+id="machineSearch"
+class="form-control"
+placeholder="Search Machine by Name or Category...">
+
+</div>
+</div>
+
 
 <div class="card shadow-sm border-0 mb-5">
-    <div class="card-body p-0 table-responsive">
-        <table class="table table-custom table-hover m-0 w-100 text-center align-middle">
+<div class="card-body p-0 table-responsive">
 
+<table class="table table-custom table-hover m-0 w-100 text-center align-middle">
 
+<thead class="text-center">
+<tr>
+<th>Sl.No</th>
+<th>Category</th>
+<th>Machine</th>
+<th>Description</th>
+<th>Image</th>
+<th>Manual</th>
+<th>Software</th>
+<th>Action</th>
+</tr>
+</thead>
 
+<tbody id="machineTable">
 
-            <thead class="text-center">
-                <tr>
-                    <th>Sl.No</th>
-                    <th>Category</th>
-                    <th>Machine</th>
-                    <th>Description</th>
-                    <th>Image</th>
-                    <th>Manual</th>
-                    <th>Software</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+{% for i in data %}
+<tr>
 
-                {% for i in data %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td><span class="badge bg-secondary">{{i.category.category_name}}</span></td>
-                    <td class="fw-bold text-primary">{{i.machine_name}}</td>
-                    <td><small class="text-muted d-inline-block text-truncate"
-                            style="max-width: 150px;">{{i.description}}</small></td>
-                    <td>
-                        {% if i.image %}
-                        <img src="{{ i.image.url }}" class="rounded shadow-sm"
-                            style="width: 50px; height: 50px; object-fit: cover;">
-                        {% else %}
-                        <span class="text-muted small">No Image</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if i.spare_manual %}
-                        <button class="btn btn-sm btn-outline-info"
-                            onclick="openPdfModal('{{ i.spare_manual.url }}')"><i class="fa-solid fa-file-pdf"></i>
-                            View</button>
-                        {% else %}
-                        <span class="text-muted small">-</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        {% if i.software_file %}
-                        <button class="btn btn-sm btn-outline-info"
-                            onclick="openPdfModal('{{ i.software_file.url }}')"><i class="fa-solid fa-file-pdf"></i>
-                            View</button>
-                        {% else %}
-                        <span class="text-muted small">-</span>
-                        {% endif %}
-                    </td>
-                    <td>
-                        <div class="d-flex justify-content-center gap-2 shadow-sm">
-                            <a href="{% url 'wadmin:editmachine' i.id %}" class="btn btn-sm btn-outline-primary"><i
-                                    class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="{% url 'wadmin:deletemachine' i.id %}" class="btn btn-sm btn-outline-danger"><i
-                                    class="fa-solid fa-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+<td>{{forloop.counter}}</td>
 
-        </table>
-    </div>
+<td>
+<span class="badge bg-secondary">
+{{i.category.category_name}}
+</span>
+</td>
+
+<td class="fw-bold text-primary">
+{{i.machine_name}}
+</td>
+
+<td>
+<small class="text-muted d-inline-block text-truncate" style="max-width:150px;">
+{{i.description}}
+</small>
+</td>
+
+<td>
+{% if i.image %}
+<img src="{{ i.image.url }}"
+class="rounded shadow-sm"
+style="width:50px;height:50px;object-fit:cover;">
+{% else %}
+<span class="text-muted small">No Image</span>
+{% endif %}
+</td>
+
+<td>
+{% if i.spare_manual %}
+<button class="btn btn-sm btn-outline-info"
+onclick="openPdfModal('{{ i.spare_manual.url }}')">
+<i class="fa-solid fa-file-pdf"></i> View
+</button>
+{% else %}
+<span class="text-muted small">-</span>
+{% endif %}
+</td>
+
+<td>
+{% if i.software_file %}
+<button class="btn btn-sm btn-outline-info"
+onclick="openPdfModal('{{ i.software_file.url }}')">
+<i class="fa-solid fa-file"></i> Open
+</button>
+{% else %}
+<span class="text-muted small">-</span>
+{% endif %}
+</td>
+
+<td>
+<div class="d-flex justify-content-center gap-2">
+
+<a href="{% url 'wadmin:editmachine' i.id %}"
+class="btn btn-sm btn-outline-primary">
+<i class="fa-solid fa-pen-to-square"></i>
+</a>
+
+<a href="{% url 'wadmin:deletemachine' i.id %}"
+class="btn btn-sm btn-outline-danger">
+<i class="fa-solid fa-trash"></i>
+</a>
+
+</div>
+</td>
+
+</tr>
+{% endfor %}
+
+</tbody>
+</table>
+
+</div>
 </div>
 
-<script>
-    function openPdfModal(pdfUrl) {
-        document.getElementById('pdfModal').style.display = 'flex';
-        document.getElementById('pdfViewer').src = pdfUrl;
-    }
 
-    function closePdfModal() {
-        document.getElementById('pdfModal').style.display = 'none';
-        document.getElementById('pdfViewer').src = '';
-    }
-
-    var msg = "{{ msg|escapejs }}";
-    if (msg) {
-        setTimeout(() => alert(msg), 100);
-    }
-</script>
-
-<!-- PDF Modal Styles Custom for Admin -->
-<style>
-    .pdf-modal {
-        display: none;
-        position: fixed;
-        z-index: 1050;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.85);
-        justify-content: center;
-        align-items: center;
-        backdrop-filter: blur(5px);
-    }
-
-    .pdf-modal-content {
-        background-color: #fff;
-        border-radius: 12px;
-        width: 85%;
-        height: 85%;
-        position: relative;
-        overflow: hidden;
-        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-    }
-
-    .pdf-close {
-        background-color: #ef4444;
-        color: white;
-        border: none;
-        width: 40px;
-        height: 40px;
-        cursor: pointer;
-        border-radius: 50%;
-        font-weight: bold;
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        z-index: 10;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    }
-
-    .pdf-close:hover {
-        background-color: #dc2626;
-        transform: scale(1.1);
-    }
-
-    iframe.pdf-iframe {
-        width: 100%;
-        height: 100%;
-        border: none;
-    }
-</style>
+<!-- PDF MODAL -->
 
 <div id="pdfModal" class="pdf-modal">
-    <div class="pdf-modal-content">
-        <button class="pdf-close" onclick="closePdfModal()"><i class="fa-solid fa-xmark"></i></button>
-        <iframe id="pdfViewer" class="pdf-iframe" src=""></iframe>
-    </div>
+
+<div class="pdf-modal-content">
+
+<button class="pdf-close" onclick="closePdfModal()">
+<i class="fa-solid fa-xmark"></i>
+</button>
+
+<iframe id="pdfViewer" class="pdf-iframe"></iframe>
+
 </div>
 
-</div><!-- End .admin-container -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+</div>
 
+
+<style>
+
+.pdf-modal{
+display:none;
+position:fixed;
+z-index:1050;
+left:0;
+top:0;
+width:100%;
+height:100%;
+background-color:rgba(0,0,0,0.85);
+justify-content:center;
+align-items:center;
+backdrop-filter:blur(5px);
+}
+
+.pdf-modal-content{
+background:#fff;
+border-radius:12px;
+width:85%;
+height:85%;
+position:relative;
+overflow:hidden;
+}
+
+.pdf-close{
+background:#ef4444;
+color:white;
+border:none;
+width:40px;
+height:40px;
+cursor:pointer;
+border-radius:50%;
+position:absolute;
+top:15px;
+right:15px;
+}
+
+iframe.pdf-iframe{
+width:100%;
+height:100%;
+border:none;
+}
+
+</style>
+
+
+<script>
+
+function openPdfModal(url){
+document.getElementById("pdfModal").style.display="flex";
+document.getElementById("pdfViewer").src=url;
+}
+
+function closePdfModal(){
+document.getElementById("pdfModal").style.display="none";
+document.getElementById("pdfViewer").src="";
+}
+
+
+document.getElementById("machineSearch").addEventListener("keyup", function(){
+
+var input = this.value.toLowerCase();
+var table = document.getElementById("machineTable");
+var rows = table.getElementsByTagName("tr");
+
+for(var i=0;i<rows.length;i++){
+
+var text = rows[i].textContent.toLowerCase();
+
+if(text.indexOf(input) > -1){
+rows[i].style.display="";
+}
+else{
+rows[i].style.display="none";
+}
+
+}
+
+});
+
+</script>
+
+
+<script>
+{% if messages %}
+{% for message in messages %}
+setTimeout(function(){
+alert("{{ message }}");
+},100);
+{% endfor %}
+{% endif %}
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
 </html>

@@ -1,0 +1,65 @@
+{% for i in data %}
+<tr>
+
+<td>{{forloop.counter}}</td>
+
+<td>
+<span class="badge bg-secondary">{{i.category.category_name}}</span>
+</td>
+
+<td class="fw-bold text-primary">
+{{i.machine_name}}
+</td>
+
+<td>
+<small class="text-muted d-inline-block text-truncate" style="max-width:150px;">
+{{i.description}}
+</small>
+</td>
+
+<td>
+{% if i.image %}
+<img src="{{ i.image.url }}" style="width:50px;height:50px;object-fit:cover;">
+{% else %}
+<span class="text-muted small">No Image</span>
+{% endif %}
+</td>
+
+<td>
+{% if i.spare_manual %}
+<button class="btn btn-sm btn-outline-info"
+onclick="openPdfModal('{{ i.spare_manual.url }}')">
+View
+</button>
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>
+{% if i.software_file %}
+<button class="btn btn-sm btn-outline-info"
+onclick="openPdfModal('{{ i.software_file.url }}')">
+Open
+</button>
+{% else %}
+-
+{% endif %}
+</td>
+
+<td>
+
+<a href="{% url 'wadmin:editmachine' eid=i.id %}"
+class="btn btn-sm btn-outline-primary">
+<i class="fa-solid fa-pen-to-square"></i>
+</a>
+
+<a href="{% url 'wadmin:deletemachine' i.id %}"
+class="btn btn-sm btn-outline-danger">
+<i class="fa-solid fa-trash"></i>
+</a>
+
+</td>
+
+</tr>
+{% endfor %}

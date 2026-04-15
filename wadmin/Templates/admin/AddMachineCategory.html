@@ -1,72 +1,142 @@
 {% include 'admin/Header.html' %}
 
 <div class="row mb-5 justify-content-center">
-    <div class="col-md-6">
-        <div class="card shadow-sm border-0 p-4">
-            <h3 class="mb-4 fw-bold text-center">Add Machine Category</h3>
-            <form action="" method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label class="form-label fw-bold">Category Name</label>
-                    <input type="text" class="form-control" name="txtcat" value="{{cat.category_name}}"
-                        autocomplete="off" placeholder="Enter Category" required>
-                </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
-                    <button type="submit" name="btn" class="btn btn-primary-custom px-4"><i
-                            class="fa-solid fa-save"></i> Save</button>
-                    <button type="reset" class="btn btn-secondary px-4"><i class="fa-solid fa-rotate-left"></i>
-                        Cancel</button>
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="col-md-6">
+
+<div class="card shadow-sm border-0 p-4">
+
+<h3 class="mb-4 fw-bold text-center">
+{% if cat %} Edit Machine Category {% else %} Add Machine Category {% endif %}
+</h3>
+
+<form action="" method="post">
+
+{% csrf_token %}
+
+<div class="mb-3">
+
+<label class="form-label fw-bold">Category Name</label>
+
+<input type="text"
+class="form-control"
+name="txtcat"
+value="{{cat.category_name|default:''}}"
+autocomplete="off"
+placeholder="Enter Category"
+required>
+
 </div>
+
+<div class="d-grid gap-2 d-md-flex justify-content-md-center mt-4">
+
+<button type="submit"
+class="btn btn-primary-custom px-4">
+
+<i class="fa-solid fa-save"></i>
+{% if cat %} Update {% else %} Save {% endif %}
+
+</button>
+
+<button type="reset"
+class="btn btn-secondary px-4">
+
+<i class="fa-solid fa-rotate-left"></i> Cancel
+
+</button>
+
+</div>
+
+</form>
+
+</div>
+</div>
+</div>
+
 
 <div class="card shadow-sm border-0">
-    <div class="card-body p-0">
-        <table class="table table-custom table-hover m-0 w-100 text-center">
 
+<div class="card-body p-0">
 
+<table class="table table-custom table-hover m-0 w-100 text-center">
 
-            <thead class="text-center">
-                <tr>
-                    <th>Sl.No</th>
-                    <th>Category</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
+<thead class="text-center">
 
-                {% for i in categories %}
-                <tr>
-                    <td>{{forloop.counter}}</td>
-                    <td class="fw-bold text-primary">{{i.category_name}}</td>
-                    <td>
-                        <div class="d-flex justify-content-center gap-2">
-                            <a href="{% url 'wadmin:editcategory' i.id %}"
-                                class="btn btn-sm btn-outline-primary shadow-sm"><i
-                                    class="fa-solid fa-pen-to-square"></i></a>
-                            <a href="{% url 'wadmin:deletecategory' i.id %}"
-                                class="btn btn-sm btn-outline-danger shadow-sm"><i class="fa-solid fa-trash"></i></a>
-                        </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
+<tr>
+<th>Sl.No</th>
+<th>Category</th>
+<th>Action</th>
+</tr>
 
-        </table>
-    </div>
+</thead>
+
+<tbody>
+
+{% for i in categories %}
+
+<tr>
+
+<td>{{forloop.counter}}</td>
+
+<td class="fw-bold text-primary">
+{{i.category_name}}
+</td>
+
+<td>
+
+<div class="d-flex justify-content-center gap-2">
+
+<a href="{% url 'wadmin:editcategory' i.id %}"
+class="btn btn-sm btn-outline-primary shadow-sm">
+
+<i class="fa-solid fa-pen-to-square"></i>
+
+</a>
+
+<a href="{% url 'wadmin:deletecategory' i.id %}"
+class="btn btn-sm btn-outline-danger shadow-sm"
+onclick="return confirm('Are you sure you want to delete this category?')">
+
+<i class="fa-solid fa-trash"></i>
+
+</a>
+
 </div>
 
+</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<!-- ✅ POPUP MESSAGE USING DJANGO MESSAGES -->
+
 <script>
-    {% if msg %}
-    setTimeout(() => alert("{{msg}}"), 100);
-    {% endif %}
+
+{% if messages %}
+{% for message in messages %}
+
+setTimeout(function(){
+alert("{{ message }}");
+},100);
+
+{% endfor %}
+{% endif %}
+
 </script>
 
-</div><!-- End .admin-container -->
+
+</div><!-- End admin container -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
 
+</body>
 </html>

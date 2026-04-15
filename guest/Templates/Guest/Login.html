@@ -1,232 +1,241 @@
 {% include 'guest/Header.html' %}
 
 <style>
-    body {
-        background-color: #f4f7fe;
-        background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
-        background-size: 30px 30px;
-    }
+body {
+    background-color: #f4f7fe;
+    background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+    background-size: 30px 30px;
+}
 
-    .login-wrapper {
-        padding: 4rem 1rem;
-        min-height: calc(100vh - 76px);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
+/* CENTER WRAPPER */
+.login-wrapper {
+    min-height: calc(100vh - 76px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
 
-    .login-card-advanced {
-        background: #ffffff;
-        border: 1px solid rgba(226, 232, 240, 0.8);
-        border-radius: 20px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
-        overflow: hidden;
-        max-width: 480px;
-        /* Smaller, centralized width */
-        width: 100%;
-        animation: fadeInUp 0.6s cubic-bezier(0.165, 0.84, 0.44, 1) forwards;
-    }
+/* LOGIN CARD */
+.login-card-advanced {
+    background: #ffffff;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.03), 0 1px 3px rgba(0,0,0,0.05);
+    overflow: hidden;
+    max-width: 420px;
+    width: 100%;
+    animation: fadeInUp 0.6s cubic-bezier(0.165,0.84,0.44,1) forwards;
+}
 
-    .card-header-auth {
-        padding: 2.5rem 2.5rem 1rem;
-        text-align: center;
-    }
+/* HEADER */
+.card-header-auth {
+    padding: 2.5rem 2.5rem 1rem;
+    text-align: center;
+}
 
-    .auth-icon-wrapper {
-        width: 64px;
-        height: 64px;
-        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto 1.5rem;
-        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
-        transform: rotate(-5deg);
-        transition: transform 0.3s ease;
-    }
+.auth-icon-wrapper {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg,#4318FF 0%,#3311DB 100%);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 20px rgba(67,24,255,0.2);
+    transform: rotate(-5deg);
+    transition: transform .3s ease;
+}
 
-    .login-card-advanced:hover .auth-icon-wrapper {
-        transform: rotate(0deg) scale(1.05);
-    }
+.login-card-advanced:hover .auth-icon-wrapper {
+    transform: rotate(0deg) scale(1.05);
+}
 
-    .form-panel {
-        padding: 1rem 2.5rem 2.5rem;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        background: white;
-    }
+/* FORM PANEL */
+.form-panel {
+    padding: 1rem 2.5rem 2.5rem;
+    display: flex;
+    flex-direction: column;
+    background: white;
+}
 
-    .form-control {
-        border-radius: 12px;
-        padding: 0.8rem 1.2rem;
-        border: 2px solid #f1f5f9;
-        background: #f8fafc;
-        transition: all 0.3s ease;
-        font-size: 0.95rem;
-        font-weight: 500;
-        color: #334155;
-    }
+/* INPUTS */
+.form-control {
+    border-radius: 12px;
+    padding: 0.8rem 1.2rem;
+    border: 2px solid #f1f5f9;
+    background: #f8fafc;
+    transition: all .3s ease;
+    font-size: .95rem;
+    font-weight: 500;
+    color: #334155;
+}
 
-    .form-control:focus {
-        background: white;
-        border-color: #4318FF;
-        box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
-        transform: translateY(-2px);
-    }
+.form-control:focus {
+    background: white;
+    border-color: #4318FF;
+    box-shadow: 0 0 0 4px rgba(67,24,255,0.1);
+    transform: translateY(-2px);
+}
 
-    .form-floating label {
-        color: #94a3b8;
-        font-weight: 500;
-        padding-left: 0.5rem;
-    }
+.form-floating label {
+    color: #94a3b8;
+    font-weight: 500;
+    padding-left: .5rem;
+}
 
-    .btn-login-submit {
-        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
-        color: white;
-        border-radius: 12px;
-        padding: 1rem;
-        font-weight: 700;
-        font-size: 1.05rem;
-        transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
-        border: none;
-        box-shadow: 0 8px 16px rgba(67, 24, 255, 0.25);
-        letter-spacing: 0.5px;
-    }
+/* LOGIN BUTTON */
+.btn-login-submit {
+    background: linear-gradient(135deg,#4318FF 0%,#3311DB 100%);
+    color: white;
+    border-radius: 12px;
+    padding: 1rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    transition: all .3s cubic-bezier(0.165,0.84,0.44,1);
+    border: none;
+    box-shadow: 0 8px 16px rgba(67,24,255,.25);
+    letter-spacing: .5px;
+}
 
-    .btn-login-submit:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 12px 20px rgba(67, 24, 255, 0.35);
-        color: white;
-    }
+.btn-login-submit:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 20px rgba(67,24,255,.35);
+    color: white;
+}
 
-    .social-btn {
-        border-radius: 10px;
-        padding: 0.7rem;
-        border: 2px solid #f1f5f9;
-        background: white;
-        font-weight: 600;
-        color: #475569;
-        transition: all 0.2s ease;
-    }
+/* SOCIAL BUTTONS */
+.social-btn {
+    border-radius: 10px;
+    padding: .7rem;
+    border: 2px solid #f1f5f9;
+    background: white;
+    font-weight: 600;
+    color: #475569;
+    transition: all .2s ease;
+}
 
-    .social-btn:hover {
-        background: #f8fafc;
-        border-color: #e2e8f0;
-        transform: translateY(-2px);
-    }
+.social-btn:hover {
+    background: #f8fafc;
+    border-color: #e2e8f0;
+    transform: translateY(-2px);
+}
 
-    .divider-text {
-        position: relative;
-        text-align: center;
-        margin: 1.5rem 0;
-    }
+/* DIVIDER */
+.divider-text {
+    position: relative;
+    text-align: center;
+    margin: 1.5rem 0;
+}
 
-    .divider-text::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 0;
-        width: 100%;
-        height: 1px;
-        background: #e2e8f0;
-    }
+.divider-text::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #e2e8f0;
+}
 
-    .divider-text span {
-        background: white;
-        padding: 0 15px;
-        color: #94a3b8;
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 1px;
-        position: relative;
-    }
+.divider-text span {
+    background: white;
+    padding: 0 15px;
+    color: #94a3b8;
+    font-size: .85rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    position: relative;
+}
 </style>
 
+
 <div class="login-wrapper">
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <div class="login-card-advanced">
 
-                    <div class="card-header-auth">
-                        <div class="auth-icon-wrapper">
-                            <i class="fa-solid fa-fingerprint text-white fs-3"></i>
-                        </div>
-                        <h3 class="fw-bold text-dark mb-1 h2">Welcome Back</h3>
-                        <p class="text-muted small">Access your secure workspace</p>
-                    </div>
+<div class="login-card-advanced">
 
-                    <div class="form-panel">
-                        {% if messages %}
-                        {% for message in messages %}
-                        <div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm py-2 px-3 small"
-                            style="background-color: #fef2f2; color: #dc2626;" role="alert">
-                            <i class="fa-solid fa-triangle-exclamation me-2"></i> {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"
-                                style="padding: 0.8rem;"></button>
-                        </div>
-                        {% endfor %}
-                        {% endif %}
+<div class="card-header-auth">
+<div class="auth-icon-wrapper">
+<i class="fa-solid fa-fingerprint text-white fs-3"></i>
+</div>
 
-                        <form method="post" action="{% url 'guest:login' %}">
-                            {% csrf_token %}
-                            <div class="form-floating mb-3">
-                                <input type="email" class="form-control" id="email" name="email"
-                                    placeholder="name@example.com" required>
-                                <label for="email"><i class="fas fa-envelope text-muted me-2"></i> Email Address</label>
-                            </div>
+<h3 class="fw-bold text-dark mb-1 h2">Welcome Back</h3>
+<p class="text-muted small">Access your secure workspace</p>
+</div>
 
-                            <div class="form-floating mb-3">
-                                <input type="password" class="form-control" id="password" name="password"
-                                    placeholder="Password" required>
-                                <label for="password"><i class="fas fa-lock text-muted me-2"></i> Password</label>
-                            </div>
 
-                            <div class="d-flex justify-content-between align-items-center mb-4 px-1">
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="remember" name="remember"
-                                        style="cursor: pointer;">
-                                    <label class="form-check-label text-muted small fw-medium" for="remember"
-                                        style="cursor: pointer;">Remember me</label>
-                                </div>
-                                <a href="#" class="text-decoration-none small fw-bold" style="color: #4318FF;">Recover
-                                    Password</a>
-                            </div>
+<div class="form-panel">
 
-                            <button type="submit" class="btn-login-submit w-100 mb-2">Sign In</button>
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger alert-dismissible fade show rounded-3 border-0 shadow-sm py-2 px-3 small"
+style="background-color:#fef2f2;color:#dc2626;" role="alert">
+<i class="fa-solid fa-triangle-exclamation me-2"></i> {{ message }}
+<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+{% endfor %}
+{% endif %}
 
-                            <div class="divider-text">
-                                <span>OR CONTINUE WITH</span>
-                            </div>
+<form method="post" action="{% url 'guest:login' %}">
+{% csrf_token %}
 
-                            <div class="row g-2 mb-4">
-                                <div class="col-6">
-                                    <a href="#"
-                                        class="btn social-btn w-100 d-flex align-items-center justify-content-center">
-                                        <i class="fab fa-google text-danger me-2"></i> Google
-                                    </a>
-                                </div>
-                                <div class="col-6">
-                                    <a href="#"
-                                        class="btn social-btn w-100 d-flex align-items-center justify-content-center">
-                                        <i class="fab fa-microsoft text-info me-2"></i> Microsoft
-                                    </a>
-                                </div>
-                            </div>
+<div class="form-floating mb-3">
+<input type="email" class="form-control" id="email" name="email" placeholder="name@example.com" required>
+<label for="email"><i class="fas fa-envelope text-muted me-2"></i>Email Address</label>
+</div>
 
-                            <div class="text-center mt-1">
-                                <p class="text-slate-500 mb-0 small fw-medium">New to TechDoc Hub? <a
-                                        href="{% url 'guest:user_registration' %}" class="fw-bold text-decoration-none"
-                                        style="color: #4318FF;">Request Access</a></p>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="form-floating mb-3">
+<input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
+<label for="password"><i class="fas fa-lock text-muted me-2"></i>Password</label>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-4 px-1">
+
+<div class="form-check">
+<input class="form-check-input" type="checkbox" id="remember">
+<label class="form-check-label text-muted small fw-medium">Remember me</label>
+</div>
+
+<a href="{% url 'guest:forgotpassword' %}">Forgot Password?</a>
+
+</div>
+
+<button type="submit" class="btn-login-submit w-100 mb-2">Sign In</button>
+
+<div class="divider-text">
+<span>OR CONTINUE WITH</span>
+</div>
+
+<div class="row g-2 mb-4">
+
+<div class="col-6">
+<a href="#" class="btn social-btn w-100 d-flex align-items-center justify-content-center">
+<i class="fab fa-google text-danger me-2"></i>Google
+</a>
+</div>
+
+<div class="col-6">
+<a href="#" class="btn social-btn w-100 d-flex align-items-center justify-content-center">
+<i class="fab fa-microsoft text-info me-2"></i>Microsoft
+</a>
+</div>
+
+</div>
+
+<div class="text-center mt-1">
+<p class="mb-0 small fw-medium">
+New to TechDoc Hub?
+<a href="{% url 'guest:user_registration' %}" class="fw-bold text-decoration-none" style="color:#4318FF;">
+New Registration
+</a>
+</p>
+</div>
+
+</form>
+
+</div>
+</div>
 </div>
 
 {% include 'guest/Footer.html' %}

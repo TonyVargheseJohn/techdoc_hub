@@ -7,6 +7,76 @@
     </div>
 </div>
 
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="card shadow-sm border-0 mb-5">
+            <div class="card-body p-0 table-responsive">
+                <table class="table table-custom table-hover m-0 w-100 align-middle">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="text-center" style="width:8%">SL.NO</th>
+                            <th style="width:30%">Title</th>
+                            <th>Description</th>
+                            <th style="width:22%">Date & Time</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        {% load tz %}
+                        {% localtime on %}
+                            {% now "Y-m-d" as todays_date %}
+
+                            {% for i in data %}
+                            <tr>
+                                <td class="text-center text-muted fw-bold">
+                                    {{ forloop.counter }}
+                                </td>
+
+                                <td class="fw-bold text-dark">
+                                    {{ i.title }}
+                                    {# Check for 'NEW' status using common field names #}
+                                    {% if i.created_at|date:"Y-m-d" == todays_date or i.date|date:"Y-m-d" == todays_date %}
+                                        <span class="notif-badge-new">NEW</span>
+                                    {% endif %}
+                                </td>
+
+                                <td class="text-muted">
+                                    {{ i.description }}
+                                </td>
+
+                                <td>
+                                    <span class="badge bg-light text-dark border px-3 py-2">
+                                        <i class="fa-regular fa-calendar me-1"></i>
+                                        {% if i.created_at %}
+                                            {{ i.created_at|date:"d M Y" }}
+                                            <br>
+                                            <small class="text-muted">{{ i.created_at|date:"h:i A" }}</small>
+                                        {% elif i.date %}
+                                            {{ i.date|date:"d M Y" }}
+                                            <br>
+                                            <small class="text-muted">{{ i.date|date:"h:i A" }}</small>
+                                        {% else %}
+                                            <small class="text-danger">Field Name Error</small>
+                                        {% endif %}
+                                    </span>
+                                </td>
+                            </tr>
+
+                            {% empty %}
+                            <tr>
+                                <td colspan="4" class="text-center text-muted py-5">
+                                    No Announcements Available
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        {% endlocaltime %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
     .notif-badge-new {
         animation: pulse-glow-badge 2s infinite;
@@ -21,90 +91,10 @@
     }
 
     @keyframes pulse-glow-badge {
-        0% {
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-            transform: scale(1);
-        }
-
-        50% {
-            box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
-            transform: scale(1.05);
-        }
-
-        100% {
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            transform: scale(1);
-        }
-    }
-
-    .table-custom tbody tr {
-        animation: rowSlide 0.4s ease both;
-    }
-
-    .table-custom tbody tr:nth-child(1) {
-        animation-delay: 0.05s;
-    }
-
-    .table-custom tbody tr:nth-child(2) {
-        animation-delay: 0.1s;
-    }
-
-    .table-custom tbody tr:nth-child(3) {
-        animation-delay: 0.15s;
-    }
-
-    .table-custom tbody tr:nth-child(4) {
-        animation-delay: 0.2s;
-    }
-
-    .table-custom tbody tr:nth-child(5) {
-        animation-delay: 0.25s;
+        0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); transform: scale(1); }
+        50% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); transform: scale(1.05); }
+        100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); transform: scale(1); }
     }
 </style>
 
-<div class="row justify-content-center">
-    <div class="col-lg-10">
-        <div class="card shadow-sm border-0 mb-5">
-            <div class="card-body p-0 table-responsive">
-                <table class="table table-custom table-hover m-0 w-100 align-middle">
-                    <thead>
-                        <tr>
-                            <th class="text-center" style="width: 8%;">#</th>
-                            <th style="width: 30%;">Title</th>
-                            <th>Description</th>
-                            <th style="width: 15%;">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% load tz %}
-                        {% now "Y-m-d" as todays_date %}
-                        {% for i in data %}
-                        <tr>
-                            <td class="text-center text-muted fw-bold">{{forloop.counter}}</td>
-                            <td class="fw-bold text-dark">
-                                {{i.title}}
-                            </td>
-                            <td class="text-muted">{{i.description}}</td>
-                            <td><span class="badge bg-light text-dark border"><i
-                                        class="fa-regular fa-calendar me-1"></i> {{i.date}}</span></td>
-                        </tr>
-                        {% empty %}
-                        <tr>
-                            <td colspan="4" class="text-center text-muted py-5">
-                                <i class="fa-regular fa-folder-open mb-2 text-primary" style="font-size: 2rem;"></i><br>
-                                No Announcements Available
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-</div><!-- End .user-container -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-
-</html>

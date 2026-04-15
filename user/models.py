@@ -24,3 +24,17 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Message for {self.user.name}"
+    
+
+
+
+
+class ChatMessage(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name="sent_msgs")
+    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name="received_msgs")
+    message = models.TextField()
+    sent_time = models.DateTimeField(auto_now_add=True)
+    status = models.CharField(max_length=20, default="sent")  # sent / seen
+
+    class Meta:
+        db_table = 'tbl_chat'

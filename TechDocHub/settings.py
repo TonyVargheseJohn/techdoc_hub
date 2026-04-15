@@ -27,7 +27,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -106,11 +105,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
 
@@ -118,8 +114,24 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = 'static/'
-
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR
-
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+
+
+
+# ================= EMAIL CONFIGURATION =================
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+# your project email
+EMAIL_HOST_USER = 'techdochub1@gmail.com'
+
+# paste your 16 digit Google App Password here
+EMAIL_HOST_PASSWORD = 'eoltowloypawpcuo'
+
+# default sender
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER

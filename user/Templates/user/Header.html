@@ -5,633 +5,390 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Dashboard</title>
-    <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <style>
-        /* ===== DESIGN TOKENS ===== */
         :root {
-            --primary: #3b82f6;
-            --primary-dark: #2563eb;
-            --primary-deeper: #1d4ed8;
-            --secondary: #f59e0b;
-            --danger: #ef4444;
-            --success: #10b981;
-            --info: #06b6d4;
-            --bg-page: linear-gradient(135deg, #f0f4ff 0%, #e8edf8 100%);
-            --card-bg: #ffffff;
-            --text-main: #1e293b;
-            --text-muted: #64748b;
-            --border-light: #e2e8f0;
-            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-            --shadow-md: 0 8px 24px rgba(59, 130, 246, 0.12);
-            --shadow-lg: 0 20px 40px rgba(59, 130, 246, 0.18);
-            --radius: 12px;
-            --radius-lg: 20px;
+            --primary:       #4318FF;
+            --primary-dark:  #3311DB;
+            --cyan:          #00D4FF;
+            --danger:        #ef4444;
+            --success:       #10b981;
+            --info:          #06b6d4;
+            --bg-page:       #F0F2FF;
+            --card-bg:       #ffffff;
+            --text-main:     #0D0D1A;
+            --text-muted:    #64748b;
+            --border-light:  #e2e8f0;
+            --shadow-sm:     0 2px 8px rgba(0,0,0,0.06);
+            --shadow-md:     0 8px 24px rgba(67,24,255,0.10);
+            --radius:        12px;
+            --radius-lg:     20px;
+            --nav-h:         68px;
         }
 
-        /* ===== BODY & BASE ===== */
+        *, *::before, *::after { box-sizing: border-box; }
+
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'DM Sans', sans-serif;
             background: var(--bg-page);
             min-height: 100vh;
             color: var(--text-main);
             overflow-x: hidden;
-            padding-top: 80px;
+            padding-top: var(--nav-h);
         }
 
-        /* ===== NAVBAR ===== */
         .navbar {
-            background: rgba(255, 255, 255, 0.88);
+            background: rgba(255,255,255,0.92);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.4);
-            box-shadow: 0 4px 20px rgba(59, 130, 246, 0.08);
-            padding: 14px 0;
-            transition: all 0.35s ease;
+            border-bottom: 1px solid rgba(67,24,255,0.08);
+            box-shadow: 0 1px 0 rgba(0,0,0,0.04), 0 4px 16px rgba(67,24,255,0.05);
+            height: var(--nav-h);
+            padding: 0;
+            transition: all 0.3s ease;
         }
+
+        .navbar .container { height: 100%; display: flex; align-items: center; }
 
         .navbar-brand {
-            font-weight: 800;
-            color: var(--primary) !important;
-            font-size: 1.45rem;
+            font-family: 'Syne', sans-serif;
+            font-weight: 800; font-size: 1.2rem;
             letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            transition: transform 0.3s ease;
+            color: var(--text-main) !important;
+            display: flex; align-items: center; gap: 10px;
+            text-decoration: none; transition: opacity 0.2s;
         }
 
-        .navbar-brand:hover {
-            transform: scale(1.04);
+        .navbar-brand:hover { opacity: 0.8; }
+
+        .brand-icon {
+            width: 36px; height: 36px; border-radius: 10px;
+            background: linear-gradient(135deg, var(--primary), #7B6FFF);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.95rem;
+            box-shadow: 0 4px 12px rgba(67,24,255,0.3); flex-shrink: 0;
         }
 
-        .navbar-brand i {
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 2px 6px rgba(59, 130, 246, 0.4));
+        .brand-text { color: var(--text-main); }
+        .brand-text span {
+            background: linear-gradient(135deg, var(--primary), var(--cyan));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
         }
 
-        /* Nav Links */
+        .nav-divider { width: 1px; height: 20px; background: var(--border-light); margin: 0 0.5rem; }
+
         .nav-link {
-            font-weight: 600;
-            font-size: 0.9rem;
-            color: #475569 !important;
-            padding: 8px 14px !important;
-            border-radius: var(--radius);
-            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            letter-spacing: 0.02em;
+            font-weight: 500; font-size: 0.875rem;
+            color: #475569 !important; padding: 6px 12px !important;
+            border-radius: 8px; transition: all 0.2s ease;
+            display: flex; align-items: center; gap: 6px;
+            white-space: nowrap; letter-spacing: 0.01em;
         }
 
-        .nav-link::after {
-            content: '';
-            position: absolute;
-            bottom: 2px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 0;
-            height: 2.5px;
-            background: linear-gradient(90deg, var(--primary), var(--info));
-            border-radius: 2px;
-            transition: width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        .nav-link i { font-size: 0.85rem; opacity: 0.7; transition: opacity 0.2s; }
+        .nav-link:hover { color: var(--primary) !important; background: rgba(67,24,255,0.06); }
+        .nav-link:hover i { opacity: 1; }
+        .nav-link.active { color: var(--primary) !important; background: rgba(67,24,255,0.08); font-weight: 600; }
+
+        /* ── Live count badge ── */
+        .nav-badge {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 18px; height: 18px;
+            background: #ef4444; color: white;
+            font-size: 0.68rem; font-weight: 700;
+            border-radius: 100px; padding: 0 5px; line-height: 1;
+            animation: badgePop 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
         }
 
-        .nav-link:hover::after {
-            width: 60%;
+        @keyframes badgePop {
+            from { transform: scale(0); }
+            to   { transform: scale(1); }
         }
 
-        .nav-link:hover,
-        .nav-link.active {
-            color: var(--primary) !important;
-            background: rgba(59, 130, 246, 0.08);
-        }
-
-        /* Dropdown */
         .dropdown-menu {
-            border: none;
-            border-radius: var(--radius);
-            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
-            padding: 10px 6px;
-            animation: dropIn 0.25s ease forwards;
-            background: white;
+            border: 1px solid rgba(67,24,255,0.08); border-radius: 14px;
+            box-shadow: 0 16px 40px rgba(0,0,0,0.1);
+            padding: 8px; min-width: 200px;
+            animation: menuIn 0.2s ease forwards; background: white;
         }
 
-        @keyframes dropIn {
-            from {
-                opacity: 0;
-                transform: translateY(-8px);
-            }
+        @keyframes menuIn {
+            from { opacity: 0; transform: translateY(-6px) scale(0.98); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
 
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .dropdown-header {
+            font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #94a3b8; padding: 6px 12px 4px;
         }
 
         .dropdown-item {
-            padding: 10px 16px;
-            font-weight: 500;
-            font-size: 0.9rem;
-            border-radius: 8px;
-            color: #475569;
-            transition: all 0.2s ease;
+            padding: 9px 12px; font-weight: 500; font-size: 0.875rem;
+            border-radius: 8px; color: #374151; transition: all 0.18s ease;
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .dropdown-item:hover {
-            color: var(--primary);
-            background: rgba(59, 130, 246, 0.07);
-            transform: translateX(4px);
+        .dropdown-item i { width: 18px; text-align: center; font-size: 0.85rem; }
+        .dropdown-item:hover { color: var(--primary); background: rgba(67,24,255,0.06); }
+        .dropdown-item.text-danger:hover { color: var(--danger) !important; background: rgba(239,68,68,0.06); }
+        .dropdown-divider { margin: 6px 0; border-color: #f1f5f9; }
+
+        .nav-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), #7B6FFF);
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 0.75rem; font-weight: 700;
+            flex-shrink: 0; border: 2px solid rgba(67,24,255,0.2);
         }
 
-        /* Logout */
-        .nav-logout {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white !important;
-            border-radius: var(--radius) !important;
-            padding: 8px 18px !important;
-            font-weight: 700;
-            letter-spacing: 0.03em;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+        .dropdown-toggle::after { margin-left: 4px; }
+
+        .nav-search-input {
+            border: 1.5px solid #e5e7eb; border-radius: 100px;
+            padding: 6px 16px 6px 36px; font-size: 0.83rem;
+            font-family: 'DM Sans', sans-serif; width: 180px;
+            background: #F8FAFF; color: var(--text-main);
+            transition: all 0.3s ease; outline: none;
         }
 
-        .nav-logout:hover {
-            background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        .nav-logout::after {
-            display: none;
-        }
-
-        /* ===== PAGE CONTAINER ===== */
-        .user-container {
-            max-width: 1260px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            animation: fadeInUp 0.55s cubic-bezier(0.165, 0.84, 0.44, 1) both;
-        }
-
-        /* ===== KEYFRAMES ===== */
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% center;
-            }
-
-            100% {
-                background-position: 200% center;
-            }
-        }
-
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.4);
-            }
-
-            50% {
-                box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
-            }
-        }
-
-        @keyframes rowSlide {
-            from {
-                opacity: 0;
-                transform: translateX(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes iconBounce {
-
-            0%,
-            100% {
-                transform: scale(1);
-            }
-
-            40% {
-                transform: scale(1.3);
-            }
-
-            60% {
-                transform: scale(0.9);
-            }
-        }
-
-        /* ===== TABLES (Global) ===== */
-        .table-custom {
-            background: white;
-            border-radius: var(--radius-lg);
-            overflow: hidden;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .table-custom thead tr {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
-        }
-
-        .table-custom thead th {
-            color: white !important;
-            background: transparent !important;
-            font-weight: 700;
-            font-size: 0.82rem;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            padding: 16px 18px;
-            border: none !important;
-            white-space: nowrap;
-        }
-
-        .table-custom tbody tr {
-            transition: all 0.25s ease;
-            border-left: 3px solid transparent;
-            animation: rowSlide 0.4s ease both;
-        }
-
-        .table-custom tbody tr:nth-child(even) {
-            background: rgba(59, 130, 246, 0.025);
-        }
-
-        .table-custom tbody tr:hover {
-            background: linear-gradient(90deg, rgba(59, 130, 246, 0.07) 0%, rgba(59, 130, 246, 0.02) 100%);
-            border-left-color: var(--primary);
-            transform: scale(1.003);
-            box-shadow: inset 0 0 0 0 transparent, var(--shadow-sm);
-        }
-
-        .table-custom td {
-            padding: 15px 18px;
-            vertical-align: middle;
-            border-color: #f1f5f9;
-            font-size: 0.92rem;
-            color: var(--text-main);
-        }
-
-        /* Stagger row animations */
-        .table-custom tbody tr:nth-child(1) {
-            animation-delay: 0.05s;
-        }
-
-        .table-custom tbody tr:nth-child(2) {
-            animation-delay: 0.1s;
-        }
-
-        .table-custom tbody tr:nth-child(3) {
-            animation-delay: 0.15s;
-        }
-
-        .table-custom tbody tr:nth-child(4) {
-            animation-delay: 0.2s;
-        }
-
-        .table-custom tbody tr:nth-child(5) {
-            animation-delay: 0.25s;
-        }
-
-        .table-custom tbody tr:nth-child(6) {
-            animation-delay: 0.3s;
-        }
-
-        .table-custom tbody tr:nth-child(7) {
-            animation-delay: 0.35s;
-        }
-
-        .table-custom tbody tr:nth-child(8) {
-            animation-delay: 0.4s;
-        }
-
-        .table-custom tbody tr:nth-child(9) {
-            animation-delay: 0.45s;
-        }
-
-        .table-custom tbody tr:nth-child(10) {
-            animation-delay: 0.5s;
-        }
-
-        /* ===== BUTTONS (Global) ===== */
-        .btn {
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            border-radius: 10px !important;
-            transition: all 0.28s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-            white-space: nowrap;
-        }
-
-        .btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 0;
-            height: 0;
-            background: rgba(255, 255, 255, 0.25);
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
-            opacity: 0;
-        }
-
-        .btn:active::after {
-            width: 200px;
-            height: 200px;
-            opacity: 1;
-        }
-
-        .btn i {
-            transition: transform 0.25s ease;
-        }
-
-        .btn:hover i {
-            transform: scale(1.18);
-        }
-
-        .btn-primary-custom {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-deeper) 100%);
-            border: none;
-            color: white;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.35);
-        }
-
-        .btn-primary-custom:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.45);
-            background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary-deeper) 100%);
-            color: white;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
-            border: none !important;
-            box-shadow: 0 4px 14px rgba(59, 130, 246, 0.3) !important;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px) !important;
-            box-shadow: 0 10px 24px rgba(59, 130, 246, 0.4) !important;
-        }
-
-        .btn-success,
-        .btn-outline-success:hover {
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
-        }
-
-        .btn-success:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
-        }
-
-        .btn-danger,
-        .btn-outline-danger:hover {
-            box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
-        }
-
-        .btn-danger:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(239, 68, 68, 0.4);
-        }
-
-        .btn-outline-primary {
-            border-width: 2px;
-        }
-
-        .btn-outline-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 18px rgba(59, 130, 246, 0.3);
-        }
-
-        .btn-outline-danger {
-            border-width: 2px;
-        }
-
-        .btn-outline-info {
-            border-width: 2px;
-        }
-
-        .btn-outline-success {
-            border-width: 2px;
-        }
-
-        /* ===== LINKS (Global) ===== */
-        a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item) {
-            color: var(--primary);
-            font-weight: 500;
-            position: relative;
-            text-decoration: none;
-            transition: color 0.2s ease;
-        }
-
-        a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item)::before {
-            content: '';
-            position: absolute;
-            width: 100%;
-            height: 2px;
-            bottom: -2px;
-            left: 0;
-            background: linear-gradient(90deg, var(--primary), var(--info));
-            transform: scaleX(0);
-            transform-origin: right;
-            transition: transform 0.3s ease;
-            border-radius: 2px;
-        }
-
-        a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):hover::before {
-            transform: scaleX(1);
-            transform-origin: left;
-        }
-
-        a:not(.btn):not(.nav-link):not(.navbar-brand):not(.dropdown-item):hover {
-            color: var(--primary-dark);
-        }
-
-        /* ===== FORM CONTROLS ===== */
-        .form-control,
-        .form-select {
-            border-radius: var(--radius);
-            padding: 11px 16px;
-            border: 1.5px solid var(--border-light);
-            background: #fafbff;
-            font-size: 0.92rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-        }
-
-        .form-control:focus,
-        .form-select:focus {
+        .nav-search-input:focus {
             border-color: var(--primary);
-            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15), 0 2px 10px rgba(59, 130, 246, 0.1);
-            background: white;
-            outline: none;
+            box-shadow: 0 0 0 3px rgba(67,24,255,0.1);
+            width: 210px; background: white;
         }
 
-        /* ===== CARDS ===== */
-        .card {
-            border-radius: var(--radius-lg) !important;
-            border: 1px solid rgba(59, 130, 246, 0.06) !important;
-            box-shadow: var(--shadow-sm) !important;
-            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        .nav-search-input::placeholder { color: #9ca3af; }
+        .nav-search-wrap { position: relative; }
+        .nav-search-wrap .search-icon {
+            position: absolute; left: 12px; top: 50%;
+            transform: translateY(-50%); color: #9ca3af;
+            font-size: 0.78rem; pointer-events: none;
         }
 
-        .card:hover {
-            box-shadow: var(--shadow-md) !important;
+        .user-container {
+            max-width: 1260px; margin: 0 auto;
+            padding: 36px 20px 60px;
+            animation: fadeInUp 0.5s cubic-bezier(0.165,0.84,0.44,1) both;
         }
 
-        /* ===== BADGES ===== */
-        .badge {
-            font-weight: 600;
-            letter-spacing: 0.04em;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.78rem;
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(24px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
 
-        /* Page title section */
-        .page-title-section h2 {
-            font-size: 1.9rem;
-            font-weight: 800;
-            color: var(--text-main);
-            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
+        .table-custom { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+        .table-custom thead tr { background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important; }
+        .table-custom thead th { color: white !important; background: transparent !important; font-weight: 700; font-size: 0.78rem; letter-spacing: 0.08em; text-transform: uppercase; padding: 14px 18px; border: none !important; white-space: nowrap; }
+        .table-custom tbody tr { transition: all 0.2s ease; border-left: 3px solid transparent; }
+        .table-custom tbody tr:nth-child(even) { background: rgba(67,24,255,0.02); }
+        .table-custom tbody tr:hover { background: rgba(67,24,255,0.04); border-left-color: var(--primary); }
+        .table-custom td { padding: 14px 18px; vertical-align: middle; border-color: #f1f5f9; font-size: 0.9rem; }
 
-        .nav-ping {
-            position: absolute;
-            top: 6px;
-            left: 14px;
-            width: 8px;
-            height: 8px;
-            background-color: #ef4444;
-            border-radius: 50%;
-            border: 2px solid white;
-            box-sizing: content-box;
-            box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-            animation: ping-glow 1.5s infinite;
-        }
+        .btn { font-weight: 600; letter-spacing: 0.02em; border-radius: 10px !important; transition: all 0.25s cubic-bezier(0.4,0,0.2,1); font-family: 'DM Sans', sans-serif; }
+        .btn-primary { background: linear-gradient(135deg, var(--primary), var(--primary-dark)) !important; border: none !important; box-shadow: 0 4px 14px rgba(67,24,255,0.3) !important; }
+        .btn-primary:hover { transform: translateY(-2px) !important; box-shadow: 0 8px 22px rgba(67,24,255,0.4) !important; }
+        .btn-primary-custom { background: linear-gradient(135deg, var(--primary), var(--primary-dark)); border: none; color: white; box-shadow: 0 4px 14px rgba(67,24,255,0.3); }
+        .btn-primary-custom:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(67,24,255,0.4); color: white; }
+        .btn-success:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(16,185,129,0.35); }
+        .btn-danger:hover  { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(239,68,68,0.35); }
 
-        @keyframes ping-glow {
-            0% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
-            }
+        .form-control, .form-select { border-radius: var(--radius); padding: 10px 14px; border: 1.5px solid var(--border-light); background: #fafbff; font-size: 0.9rem; font-family: 'DM Sans', sans-serif; transition: all 0.3s ease; }
+        .form-control:focus, .form-select:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(67,24,255,0.1); background: white; outline: none; }
 
-            70% {
-                transform: scale(1);
-                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
-            }
+        .card { border-radius: var(--radius-lg) !important; border: 1px solid rgba(67,24,255,0.06) !important; box-shadow: var(--shadow-sm) !important; }
+        .badge { font-weight: 600; letter-spacing: 0.04em; padding: 5px 10px; border-radius: 20px; font-size: 0.75rem; }
+        .page-title-section h2 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; color: var(--text-main); }
 
-            100% {
-                transform: scale(0.95);
-                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-            }
-        }
+        @keyframes rowSlide { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: translateX(0); } }
+        .table-custom tbody tr { animation: rowSlide 0.35s ease both; }
+        .table-custom tbody tr:nth-child(1)  { animation-delay: 0.05s; }
+        .table-custom tbody tr:nth-child(2)  { animation-delay: 0.10s; }
+        .table-custom tbody tr:nth-child(3)  { animation-delay: 0.15s; }
+        .table-custom tbody tr:nth-child(4)  { animation-delay: 0.20s; }
+        .table-custom tbody tr:nth-child(5)  { animation-delay: 0.25s; }
+        .table-custom tbody tr:nth-child(6)  { animation-delay: 0.30s; }
+        .table-custom tbody tr:nth-child(7)  { animation-delay: 0.35s; }
+        .table-custom tbody tr:nth-child(8)  { animation-delay: 0.40s; }
+        .table-custom tbody tr:nth-child(9)  { animation-delay: 0.45s; }
+        .table-custom tbody tr:nth-child(10) { animation-delay: 0.50s; }
     </style>
-
 </head>
 
 <body>
 
-    <!-- Fixed Navbar -->
+    <!-- ══ NAVBAR ══ -->
     <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="{% url 'webuser:home' %}">
-                <i class="fa-solid fa-cube"></i> TechDoc User
+
+            <!-- Brand -->
+            <a class="navbar-brand me-4" href="{% url 'webuser:home' %}">
+                <div class="brand-icon"><i class="fa-solid fa-layer-group"></i></div>
+                <span class="brand-text">Tech<span>Doc</span></span>
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+
+            <button class="navbar-toggler border-0 shadow-none" type="button"
+                    data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-                <ul class="navbar-nav align-items-center">
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'webuser:home' %}"><i class="fa-solid fa-house-user me-1"></i>
-                            Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'webuser:viewmachine' %}"><i
-                                class="fa-solid fa-gears me-1"></i> Machines</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'webuser:my_uploads' %}"><i
-                                class="fa-solid fa-cloud-arrow-up me-1"></i> My Uploads</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'webuser:viewannouncement' %}"><i
-                                class="fa-solid fa-bullhorn me-1"></i> Announcements</a>
-                    </li>
+
+            <div class="collapse navbar-collapse justify-content-between" id="navbarNav">
+
+                <!-- Left links -->
+                <ul class="navbar-nav align-items-center gap-1">
 
                     <li class="nav-item">
-                        <a class="nav-link position-relative" href="{% url 'webuser:notifications' %}">
-                            <i class="fa-regular fa-bell me-1"></i>
-                            <span class="nav-ping" id="nav-ping-badge"></span>
-                            Notifications
+                        <a class="nav-link" href="{% url 'webuser:home' %}">
+                            <i class="fa-solid fa-house"></i> Home
                         </a>
-                        <script>
-                            if (sessionStorage.getItem('notifications_viewed') === 'true') {
-                                document.getElementById('nav-ping-badge').style.display = 'none';
-                            }
-                        </script>
                     </li>
 
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
-                            <i class="fa-solid fa-circle-user me-1"></i> Profile
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webuser:viewmachine' %}">
+                            <i class="fa-solid fa-gears"></i> Machines
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end">
-                            <li><a class="dropdown-item" href="{% url 'webuser:myprofile' %}"><i
-                                        class="fa-solid fa-id-card me-2 text-primary"></i>My Profile</a></li>
-                            <li><a class="dropdown-item" href="{% url 'webuser:editprofile' %}"><i
-                                        class="fa-solid fa-user-pen me-2 text-success"></i>Edit Profile</a></li>
-                            <li>
-                                <hr class="dropdown-divider">
-                            </li>
-                            <li><a class="dropdown-item text-danger fw-bold" href="{% url 'guest:login' %}"><i
-                                        class="fa-solid fa-right-from-bracket me-2"></i>Logout</a></li>
-                        </ul>
                     </li>
 
-                    <li class="nav-item ms-2 align-self-center d-none d-lg-block">
-                        <form class="d-flex" method="GET" action="{% url 'webuser:search_uploads' %}">
-                            <input class="form-control form-control-sm me-1 shadow-sm" type="search" name="search_query"
-                                placeholder="Global Search..."
-                                style="border-radius: 20px; padding: 5px 15px; width: 150px; border: 1px solid #cbd5e1;">
-                            <button class="btn btn-sm btn-primary-custom" type="submit"
-                                style="padding: 5px 12px; border-radius: 20px; box-shadow: none;"><i
-                                    class="fa-solid fa-search"></i></button>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webuser:my_uploads' %}">
+                            <i class="fa-solid fa-cloud-arrow-up"></i> My Uploads
+                        </a>
+                    </li>
+
+                    <!-- ✅ Announcements — correct endpoint -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webuser:viewannouncement' %}">
+                            <i class="fa-solid fa-bullhorn"></i> Announcements
+                            <span class="nav-badge ms-1"
+                                  id="announcement-badge"
+                                  style="display:none;"></span>
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webuser:notifications' %}">
+                            <i class="fa-regular fa-bell"></i> Notifications
+                            <span class="nav-badge ms-1"
+                                  id="nav-ping-badge"
+                                  style="display:none;"></span>
+                        </a>
+                    </li>
+
+                    <!-- ✅ Chat — FIXED URL + live unread badge -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'webuser:user_chat' %}">
+                            <i class="fa-solid fa-comments"></i> Chat
+                            <span class="nav-badge ms-1"
+                                  id="chat-badge"
+                                  style="display:none;"></span>
+                        </a>
+                    </li>
+
+                </ul>
+
+                <!-- Right side -->
+                <ul class="navbar-nav align-items-center gap-2 ms-3">
+
+                    <!-- Search -->
+                    <li class="nav-item d-none d-lg-block">
+                        <form method="GET" action="{% url 'webuser:search_uploads' %}">
+                            <div class="nav-search-wrap">
+                                <i class="fa-solid fa-search search-icon"></i>
+                                <input class="nav-search-input" type="search" name="search_query"
+                                       placeholder="Search documents…">
+                            </div>
                         </form>
                     </li>
 
+                    <li class="nav-item"><div class="nav-divider d-none d-lg-block"></div></li>
+
+                    <!-- Profile dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center gap-2 pe-0"
+                           href="#" role="button" data-bs-toggle="dropdown">
+                            <div class="nav-avatar">
+                                <i class="fa-solid fa-user" style="font-size:0.75rem;"></i>
+                            </div>
+                            <span class="d-none d-lg-inline"
+                                  style="font-weight:600; font-size:0.875rem; color:#374151;">Profile</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li><div class="dropdown-header">Account</div></li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'webuser:myprofile' %}">
+                                    <i class="fa-solid fa-id-card" style="color: var(--primary);"></i> My Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'webuser:editprofile' %}">
+                                    <i class="fa-solid fa-user-pen" style="color: var(--success);"></i> Edit Profile
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="{% url 'webuser:changepassword' %}">
+                                    <i class="fa-solid fa-lock" style="color: #f59e0b;"></i> Change Password
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item text-danger fw-bold" href="{% url 'guest:login' %}">
+                                    <i class="fa-solid fa-right-from-bracket"
+                                       style="color: var(--danger);"></i> Sign Out
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
 
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Main Content Wrapper Starts Here. End it in child templates -->
+    <!-- ══ MAIN CONTENT WRAPPER ══ -->
     <div class="user-container">
+
+    {% if messages %}{% endif %}
+
+    <script>
+        // ✅ Announcement unread count — correct endpoint
+        function checkAnnouncements() {
+            fetch('/user/ajax/announcement-count/')
+                .then(res => res.json())
+                .then(data => {
+                    const badge = document.getElementById("announcement-badge");
+                    if (data.count > 0) {
+                        badge.style.display = "inline-flex";
+                        badge.innerText     = data.count > 99 ? '99+' : data.count;
+                    } else {
+                        badge.style.display = "none";
+                    }
+                })
+                .catch(() => {});
+        }
+
+        // ✅ Chat unread count — messages from admin not yet read by user
+        function checkChatUnread() {
+            fetch('/user/ajax/unread-count/')
+                .then(r => r.json())
+                .then(data => {
+                    const badge = document.getElementById('chat-badge');
+                    if (data.unread_count > 0) {
+                        badge.style.display = 'inline-flex';
+                        badge.innerText     = data.unread_count > 99 ? '99+' : data.unread_count;
+                    } else {
+                        badge.style.display = 'none';
+                    }
+                })
+                .catch(() => {});
+        }
+
+        // Run on page load
+        checkAnnouncements();
+        checkChatUnread();
+
+        // Poll every few seconds
+        setInterval(checkAnnouncements, 5000);
+        setInterval(checkChatUnread,    3000);
+    </script>

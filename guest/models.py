@@ -8,7 +8,7 @@ class User(models.Model):
     email = models.EmailField(unique=True, null=True)
     gender = models.CharField(max_length=50)
     photo = models.FileField(upload_to='UserPhoto/')
-    password = models.CharField(max_length=50, unique=True)
+    password = models.CharField(max_length=50)
     status = models.CharField(max_length=20, default='pending')
 
     class Meta:
@@ -28,3 +28,20 @@ class Admin(models.Model):
 
     class Meta:
         db_table = 'tbl_admin'
+
+
+
+
+# ADD AT THE BOTTOM of guest/models.py
+class Message(models.Model):
+    sender_type = models.CharField(max_length=10)  # 'admin' or 'user'
+    sender_id = models.IntegerField()
+    receiver_type = models.CharField(max_length=10)
+    receiver_id = models.IntegerField()
+    message = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = 'tbl_messages'
+        ordering = ['timestamp']

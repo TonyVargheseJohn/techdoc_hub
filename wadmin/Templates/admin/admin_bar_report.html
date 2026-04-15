@@ -1,0 +1,477 @@
+{% include "admin/Header.html" %}
+
+<style>
+    /* Modern styling for the date filter section */
+    .filter-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        padding: 25px;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        margin-bottom: 30px;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-end;
+        gap: 15px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .filter-group {
+        flex: 1;
+        min-width: 180px;
+    }
+
+    .filter-group label {
+        display: block;
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .filter-group input[type="date"] {
+        width: 100%;
+        padding: 12px 15px;
+        border: none;
+        border-radius: 10px;
+        background: rgba(255, 255, 255, 0.95);
+        font-size: 0.95rem;
+        color: #333;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        border: 2px solid transparent;
+    }
+
+    .filter-group input[type="date"]:focus {
+        outline: none;
+        background: white;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        border-color: #ffd700;
+        transform: translateY(-2px);
+    }
+
+    .filter-group input[type="date"]::-webkit-calendar-picker-indicator {
+        cursor: pointer;
+        opacity: 0.6;
+        filter: invert(0.5);
+    }
+
+    .filter-group input[type="date"]::-webkit-calendar-picker-indicator:hover {
+        opacity: 1;
+    }
+
+    /* Disabled date styling */
+    .filter-group input[type="date"]:disabled {
+        background: rgba(255, 255, 255, 0.7);
+        cursor: not-allowed;
+        opacity: 0.7;
+    }
+
+    .filter-actions {
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+    }
+
+    .btn-filter {
+        background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(245, 87, 108, 0.4);
+        border: 2px solid transparent;
+    }
+
+    .btn-filter:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(245, 87, 108, 0.6);
+        border-color: white;
+    }
+
+    .btn-filter:active {
+        transform: translateY(-1px);
+    }
+
+    .btn-reset {
+        background: rgba(255, 255, 255, 0.2);
+        color: white;
+        border: 2px solid rgba(255, 255, 255, 0.5);
+        padding: 12px 25px;
+        border-radius: 50px;
+        font-size: 0.95rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(5px);
+    }
+
+    .btn-reset:hover {
+        background: rgba(255, 255, 255, 0.3);
+        border-color: white;
+        transform: translateY(-2px);
+    }
+
+    /* Date preset chips - Enhanced with better visibility */
+    .date-presets {
+        display: flex;
+        gap: 12px;
+        margin: 15px 0 25px 0;
+        flex-wrap: wrap;
+    }
+
+    .preset-chip {
+        padding: 8px 18px;
+        border-radius: 30px;
+        font-size: 0.9rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        letter-spacing: 0.3px;
+    }
+
+    /* Different colors for each preset chip */
+    .preset-chip[data-range="today"] {
+        background: linear-gradient(135deg, #FF6B6B, #EE5A24);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .preset-chip[data-range="yesterday"] {
+        background: linear-gradient(135deg, #FFA62E, #EA9525);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .preset-chip[data-range="last7days"] {
+        background: linear-gradient(135deg, #6C5CE7, #5B4BC4);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .preset-chip[data-range="last30days"] {
+        background: linear-gradient(135deg, #00B894, #00997A);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .preset-chip[data-range="thisMonth"] {
+        background: linear-gradient(135deg, #FD79A8, #E84393);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .preset-chip[data-range="lastMonth"] {
+        background: linear-gradient(135deg, #8E44AD, #9B59B6);
+        color: white;
+        border: 2px solid #F39C12;
+        box-shadow: 0 4px 15px rgba(142, 68, 173, 0.5);
+    }
+
+    /* Hover effects for all chips */
+    .preset-chip:hover {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        filter: brightness(1.1);
+    }
+
+    /* Special hover for last month chip */
+    .preset-chip[data-range="lastMonth"]:hover {
+        border-color: #F1C40F;
+        box-shadow: 0 8px 25px rgba(241, 196, 15, 0.4);
+    }
+
+    /* Chart container styling */
+    .chart-container {
+        background: white;
+        padding: 20px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+        font-size: 2rem;
+        font-weight: 600;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display: inline-block;
+    }
+
+    /* Error message styling */
+    .date-error {
+        background: #ff6b6b;
+        color: white;
+        padding: 10px 15px;
+        border-radius: 8px;
+        margin: 10px 0;
+        display: none;
+        font-size: 0.9rem;
+        text-align: center;
+    }
+</style>
+
+<h2>Machine Upload Report</h2>
+
+<!-- Date error message -->
+<div id="dateError" class="date-error"></div>
+
+<!-- Stylish Date range filter form -->
+<div class="filter-container">
+    <div class="filter-group">
+        <label>📅 From Date</label>
+        <input type="date" name="from_date" value="{{ from_date }}" id="fromDate" max="{{ today_date }}">
+    </div>
+    
+    <div class="filter-group">
+        <label>📅 To Date</label>
+        <input type="date" name="to_date" value="{{ to_date }}" id="toDate" max="{{ today_date }}">
+    </div>
+    
+    <div class="filter-actions">
+        <button type="submit" form="filterForm" class="btn-filter">
+            🔍 Apply Filter
+        </button>
+        <button type="button" class="btn-reset" onclick="resetDates()">
+            ↻ Reset
+        </button>
+    </div>
+</div>
+
+<!-- Quick date preset chips with improved visibility -->
+<div class="date-presets">
+    <span class="preset-chip" data-range="today" onclick="setDateRange('today')">📅 Today</span>
+    <span class="preset-chip" data-range="yesterday" onclick="setDateRange('yesterday')">⬅️ Yesterday</span>
+    <span class="preset-chip" data-range="last7days" onclick="setDateRange('last7days')">📊 Last 7 Days</span>
+    <span class="preset-chip" data-range="last30days" onclick="setDateRange('last30days')">📈 Last 30 Days</span>
+    <span class="preset-chip" data-range="thisMonth" onclick="setDateRange('thisMonth')">🗓️ This Month</span>
+    <span class="preset-chip" data-range="lastMonth" onclick="setDateRange('lastMonth')">🌟 Last Month</span>
+</div>
+
+<!-- Form that actually submits -->
+<form method="get" id="filterForm" style="display: none;">
+    <input type="hidden" name="from_date" id="hiddenFromDate" value="{{ from_date }}">
+    <input type="hidden" name="to_date" id="hiddenToDate" value="{{ to_date }}">
+</form>
+
+<!-- Chart container -->
+<div class="chart-container">
+    <canvas id="barChart" width="500" height="300" style="max-width: 600px; max-height: 350px;"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+// Get today's date in YYYY-MM-DD format
+const today = new Date();
+const todayStr = today.toISOString().split('T')[0];
+
+// Chart initialization
+const ctx = document.getElementById('barChart').getContext('2d');
+const labels = {{ chart_labels|safe }};
+const chartData = {
+    labels: labels,
+    datasets: [{
+        label: 'Number of Uploads',
+        data: {{ chart_counts|safe }},
+        backgroundColor: '#36A2EB',
+        borderColor: '#2A8AC0',
+        borderWidth: 1,
+        borderRadius: 5,
+        barPercentage: 0.7
+    }]
+};
+
+let barChart = new Chart(ctx, {
+    type: 'bar',
+    data: chartData,
+    options: {
+        responsive: true,
+        maintainAspectRatio: true,
+        plugins: {
+            legend: { display: false },
+            title: { 
+                display: true, 
+                text: 'Machine Upload Counts',
+                font: { size: 14, weight: 'bold' },
+                padding: { top: 10, bottom: 20 }
+            }
+        },
+        scales: {
+            y: { 
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: 'Number of Uploads',
+                    font: { weight: '500' }
+                },
+                grid: {
+                    color: 'rgba(0, 0, 0, 0.05)'
+                }
+            },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Machine Names',
+                    font: { weight: '500' }
+                },
+                grid: {
+                    display: false
+                }
+            }
+        },
+        layout: {
+            padding: {
+                top: 10,
+                bottom: 10,
+                left: 10,
+                right: 10
+            }
+        }
+    }
+});
+
+// Function to validate dates
+function validateDates(fromDate, toDate) {
+    const errorDiv = document.getElementById('dateError');
+    
+    // Check if any date is after today
+    if (fromDate > todayStr) {
+        errorDiv.textContent = '⚠️ From date cannot be after today!';
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+        return false;
+    }
+    
+    if (toDate > todayStr) {
+        errorDiv.textContent = '⚠️ To date cannot be after today!';
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+        return false;
+    }
+    
+    // Check if from date is greater than to date
+    if (fromDate && toDate && fromDate > toDate) {
+        errorDiv.textContent = '⚠️ From date cannot be later than To date!';
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 3000);
+        return false;
+    }
+    
+    return true;
+}
+
+// Date helper functions
+function setDateRange(range) {
+    const today = new Date();
+    let fromDate = new Date();
+    let toDate = new Date();
+    
+    switch(range) {
+        case 'today':
+            fromDate = today;
+            toDate = today;
+            break;
+        case 'yesterday':
+            fromDate.setDate(today.getDate() - 1);
+            toDate.setDate(today.getDate() - 1);
+            break;
+        case 'last7days':
+            fromDate.setDate(today.getDate() - 7);
+            toDate = today;
+            break;
+        case 'last30days':
+            fromDate.setDate(today.getDate() - 30);
+            toDate = today;
+            break;
+        case 'thisMonth':
+            fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
+            toDate = today;
+            break;
+        case 'lastMonth':
+            fromDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
+            toDate = new Date(today.getFullYear(), today.getMonth(), 0);
+            break;
+    }
+    
+    const formattedFromDate = formatDate(fromDate);
+    const formattedToDate = formatDate(toDate);
+    
+    // Validate the dates before submitting
+    if (validateDates(formattedFromDate, formattedToDate)) {
+        document.getElementById('fromDate').value = formattedFromDate;
+        document.getElementById('toDate').value = formattedToDate;
+        
+        document.getElementById('hiddenFromDate').value = formattedFromDate;
+        document.getElementById('hiddenToDate').value = formattedToDate;
+        document.getElementById('filterForm').submit();
+    }
+}
+
+function resetDates() {
+    document.getElementById('fromDate').value = '';
+    document.getElementById('toDate').value = '';
+    document.getElementById('hiddenFromDate').value = '';
+    document.getElementById('hiddenToDate').value = '';
+    document.getElementById('filterForm').submit();
+}
+
+function formatDate(date) {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+}
+
+// Sync visible date inputs with hidden ones before submit with validation
+document.querySelector('.btn-filter').addEventListener('click', function(e) {
+    e.preventDefault();
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = document.getElementById('toDate').value;
+    
+    if (validateDates(fromDate, toDate)) {
+        document.getElementById('hiddenFromDate').value = fromDate;
+        document.getElementById('hiddenToDate').value = toDate;
+        document.getElementById('filterForm').submit();
+    }
+});
+
+// Add real-time validation for date inputs
+document.getElementById('fromDate').addEventListener('change', function() {
+    const fromDate = this.value;
+    const toDate = document.getElementById('toDate').value;
+    
+    if (fromDate && toDate && fromDate > toDate) {
+        validateDates(fromDate, toDate);
+        this.value = '';
+    }
+});
+
+document.getElementById('toDate').addEventListener('change', function() {
+    const fromDate = document.getElementById('fromDate').value;
+    const toDate = this.value;
+    
+    if (fromDate && toDate && fromDate > toDate) {
+        validateDates(fromDate, toDate);
+        this.value = '';
+    }
+});
+</script>
