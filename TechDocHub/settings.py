@@ -135,3 +135,4 @@ EMAIL_HOST_PASSWORD = 'eoltowloypawpcuo'
 
 # default sender
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+STATIC_ROOT = BASE_DIR / 'staticfiles'
