@@ -89,7 +89,7 @@ from guest.models import *
 #         messages.success(request, "User registered successfully. Please wait for admin approval.")
 #         return redirect('guest:user_registration')
 
-#     return render(request,'Guest/Newuser.html')
+#     return render(request,'guest/newuser.html')
 
 
 
@@ -166,7 +166,7 @@ TechDocHub Team
         messages.success(request, "User registered successfully. Please wait for admin approval.")
         return redirect('guest:login')
 
-    return render(request,'Guest/Newuser.html')
+    return render(request,'guest/newuser.html')
 
 
 from django.shortcuts import render, redirect
@@ -175,7 +175,7 @@ from .models import User
 
 
 def home(request):
-    return render(request,"Guest/Home.html")
+    return render(request,"guest/home.html")
 
 
 from django.contrib.auth.hashers import check_password
@@ -205,7 +205,7 @@ def login(request):
                 request.session['uid'] = user.id
                 return redirect("webuser:home")
             else:
-                return render(request, "Guest/Login.html", {
+                return render(request, "guest/login.html", {
                     "error": "Your account is pending verification or has been rejected."
                 })
 
@@ -220,12 +220,12 @@ def login(request):
 
 
         else:
-            return render(request, "Guest/Login.html", {
+            return render(request, "guest/login.html", {
                 "error": "Invalid email/username or password"
             })
 
     else:
-        return render(request, "Guest/Login.html")
+        return render(request, "guest/login.html")
 
 
 
@@ -270,7 +270,7 @@ TechDocHub
         else:
             messages.error(request,"Invalid Email or Employee ID")
 
-    return render(request,"Guest/Forgot.html")
+    return render(request,"guest/forgot.html")
 
 
 
@@ -287,7 +287,7 @@ def verify_otp(request):
         else:
             messages.error(request,"Invalid OTP")
 
-    return render(request,"Guest/VerifyOTP.html")
+    return render(request,"guest/verifyotp.html")
 
 
 
@@ -328,4 +328,4 @@ TechDocHub Team
 
         return redirect("guest:login")
 
-    return render(request, "Guest/NewPassword.html")
+    return render(request, "guest/newpassword.html")

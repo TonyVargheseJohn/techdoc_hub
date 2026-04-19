@@ -22,7 +22,7 @@ from user.models import *
 
 
 def home(request):
-    return render(request,"user/Home.html")
+    return render(request,"user/home.html")
 
 
 
@@ -37,7 +37,7 @@ def myprofile(request):
     except User.DoesNotExist:
         return redirect('guest:login')  # user deleted or not found
 
-    return render(request, 'user/Myprofile.html', {'data': data})
+    return render(request, 'user/myprofile.html', {'data': data})
 
     
 
@@ -56,7 +56,7 @@ def editprofile(request):
         return redirect("webuser:myprofile")
 
     else:
-        return render(request, "user/Editprofile.html", {'data': data})
+        return render(request, "user/editprofile.html", {'data': data})
 
 
 
@@ -119,7 +119,7 @@ def viewannouncement(request):
     if latest:
         request.session["last_seen_announcement"] = latest.id
 
-    return render(request,"user/ViewAnnouncement.html",{"data":data})
+    return render(request,"user/viewannouncement.html",{"data":data})
 
 
 
@@ -185,7 +185,7 @@ def viewmachine(request):
             .order_by("-upload_date")  # ✅ Latest first
         )
 
-    return render(request, "user/ViewMachine.html", {
+    return render(request, "user/viewmachine.html", {
         "category": category,
         "machines": machines,
         "selected_machine": selected_machine,
@@ -243,7 +243,7 @@ def my_uploads(request):
     for u in uploads:
         u.can_delete = u.upload_date and now <= u.upload_date + timedelta(hours=2)
 
-    return render(request, "user/MyUploads.html", {
+    return render(request, "user/myuploads.html", {
         "uploads": uploads
     })
 
@@ -261,7 +261,7 @@ def search_uploads(request):
         .order_by("-upload_date")
     )
 
-    return render(request, "user/SearchUploads.html", {
+    return render(request, "user/searchuploads.html", {
         "uploads": uploads
     })
 
@@ -286,7 +286,7 @@ def my_notifications(request):
 
     notes = Notification.objects.filter(user_id=uid).order_by("-created_at")
 
-    return render(request,"user/Notifications.html",{"notes":notes})
+    return render(request,"user/notifications.html",{"notes":notes})
 
 
 
@@ -304,7 +304,7 @@ def chat_page(request, uid):
         receiver__in=[sender, receiver]
     ).order_by("timestamp")
 
-    return render(request,"User/chat.html",{
+    return render(request,"user/chat.html",{
         "receiver":receiver,
         "messages":messages
     })
@@ -356,7 +356,7 @@ def chat_users(request):
         return redirect("guest:login")
 
     users = User.objects.exclude(id=request.session["uid"])
-    return render(request, "User/chat_users.html", {"users": users})
+    return render(request, "user/chat_users.html", {"users": users})
 
 
 
