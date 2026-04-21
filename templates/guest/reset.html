@@ -1,0 +1,141 @@
+{% include 'guest/header.html' %}
+
+<style>
+    body {
+        background-color: #f4f7fe;
+        background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+        background-size: 30px 30px;
+    }
+
+    .reset-wrapper {
+        padding: 4rem 1rem;
+        min-height: calc(100vh - 76px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .reset-card {
+        background: #ffffff;
+        border: 1px solid rgba(226, 232, 240, 0.8);
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.03), 0 1px 3px rgba(0, 0, 0, 0.05);
+        overflow: hidden;
+        max-width: 480px;
+        width: 100%;
+        animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .reset-header {
+        padding: 2.5rem 2.5rem 1rem;
+        text-align: center;
+    }
+
+    .reset-icon {
+        width: 64px;
+        height: 64px;
+        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        box-shadow: 0 10px 20px rgba(67, 24, 255, 0.2);
+        transform: rotate(-5deg);
+        transition: transform 0.3s ease;
+    }
+
+    .reset-card:hover .reset-icon {
+        transform: rotate(0deg) scale(1.05);
+    }
+
+    .reset-body {
+        padding: 1rem 2.5rem 2.5rem;
+    }
+
+    .form-control {
+        border-radius: 12px;
+        padding: 0.8rem 1.2rem;
+        border: 2px solid #f1f5f9;
+        background: #f8fafc;
+        transition: all 0.3s ease;
+        font-size: 0.95rem;
+        font-weight: 500;
+        color: #334155;
+    }
+
+    .form-control:focus {
+        background: white;
+        border-color: #4318FF;
+        box-shadow: 0 0 0 4px rgba(67, 24, 255, 0.1);
+        transform: translateY(-2px);
+    }
+
+    .btn-reset-submit {
+        background: linear-gradient(135deg, #4318FF 0%, #3311DB 100%);
+        color: white;
+        border-radius: 12px;
+        padding: 1rem;
+        font-weight: 700;
+        font-size: 1.05rem;
+        transition: all 0.3s ease;
+        border: none;
+        box-shadow: 0 8px 16px rgba(67, 24, 255, 0.25);
+        letter-spacing: 0.5px;
+    }
+
+    .btn-reset-submit:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 20px rgba(67, 24, 255, 0.35);
+        color: white;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+
+<div class="reset-wrapper">
+    <div class="reset-card">
+
+        <div class="reset-header">
+            <div class="reset-icon">
+                <i class="fa-solid fa-shield-halved text-white fs-3"></i>
+            </div>
+            <h3 class="fw-bold text-dark mb-1">Reset Your Password</h3>
+            <p class="text-muted small">Create a new secure password</p>
+        </div>
+
+        <div class="reset-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="mb-4">
+                    <input type="password" class="form-control" name="password" placeholder="Enter new password" required>
+                </div>
+
+                <button type="submit" class="btn-reset-submit w-100">
+                    Update Password
+                </button>
+
+                <div class="text-center mt-3 small">
+                    Remembered it?
+                    <a href="{% url 'guest:login' %}" style="color:#4318FF;font-weight:600;text-decoration:none;">
+                        Back to Login
+                    </a>
+                </div>
+
+            </form>
+        </div>
+
+    </div>
+</div>
+
+{% include 'guest/footer.html' %}

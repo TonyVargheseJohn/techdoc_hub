@@ -1,0 +1,186 @@
+{% include 'admin/header.html' %}
+
+<style>
+  .msg-wrapper {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  .msg-wrapper:hover .btn-delete { opacity: 1; }
+
+  .btn-delete {
+    opacity: 0;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    border: none; cursor: pointer;
+    background: #fee2e2;
+    color: #ef4444;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 10px;
+    margin-left: 6px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .btn-delete:hover {
+    background: #ef4444;
+    color: white;
+    transform: scale(1.1);
+  }
+</style>
+
+<div style="padding: 24px; max-width: 760px; margin: auto;">
+
+  <!-- Header -->
+  <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 20px; background: #fff; padding: 14px 18px; border-radius: 12px; border: 1px solid #e0e0e0;">
+    <img src="/media/{{ chat_user.photo }}" alt="photo"
+         style="width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid #0084ff;">
+    <div>
+      <div style="font-weight: 600; font-size: 16px;">{{ chat_user.name }}</div>
+      <div style="font-size: 12px; color: #4caf50;">● Online</div>
+    </div>
+    <a href="{% url 'wadmin:admin_chat_list' %}"
+       style="margin-left: auto; font-size: 13px; color: #0084ff; text-decoration: none;">← Back</a>
+  </div>
+
+  <!-- Chat Box -->
+  <div id="chatBox"
+       style="height: 420px; overflow-y: auto; background: #f5f7fb; border-radius: 12px; padding: 16px; border: 1px solid #e0e0e0; display: flex; flex-direction: column; gap: 10px;">
+  </div>
+
+  <!-- Input -->
+  <div style="display: flex; gap: 10px; margin-top: 14px;">
+    <input type="text" id="msgInput" placeholder="Type a message..."
+           style="flex: 1; padding: 10px 16px; border: 1px solid #ccc; border-radius: 24px; font-size: 14px; outline: none;">
+    <button onclick="sendMessage()"
+            style="background: #0084ff; color: white; border: none; padding: 10px 22px; border-radius: 24px; cursor: pointer; font-size: 14px;">
+      Send
+    </button>
+  </div>
+</div>
+
+<script>
+  const ADMIN_ID = {{ admin_id }};
+  const USER_ID  = {{ chat_user.id }};
+  let lastCount  = 0;
+
+  function markAsRead() {
+    fetch('/wadmin/ajax/mark-read/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ user_id: USER_ID, admin_id: ADMIN_ID })
+    }).catch(() => {});
+  }
+
+  // ✅ Direct delete — no confirmation
+  function deleteMessage(messageId) {
+    fetch('/wadmin/ajax/delete-message/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message_id: messageId })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'deleted') {
+        lastCount = 0;
+        fetchMessages();
+      }
+    })
+    .catch(() => {});
+  }
+
+  function fetchMessages() {
+    fetch(`/wadmin/ajax/get-messages/?admin_id=${ADMIN_ID}&user_id=${USER_ID}`)
+      .then(r => r.json())
+      .then(data => {
+        const box = document.getElementById('chatBox');
+
+        if (data.messages.length === lastCount) {
+          markAsRead();
+          return;
+        }
+
+        lastCount = data.messages.length;
+        box.innerHTML = '';
+
+        data.messages.forEach(m => {
+          const isMe = m.sender_type === 'admin';
+
+          const wrapper = document.createElement('div');
+          wrapper.className = 'msg-wrapper';
+          wrapper.style.cssText = `justify-content:${isMe ? 'flex-end' : 'flex-start'};`;
+
+          // ── Bubble ──
+          const bubble = document.createElement('div');
+          bubble.style.cssText = `
+            max-width: 65%;
+            padding: 9px 14px;
+            border-radius: ${isMe ? '18px 18px 4px 18px' : '18px 18px 18px 4px'};
+            background: ${isMe ? '#0084ff' : '#ffffff'};
+            color: ${isMe ? '#fff' : '#222'};
+            font-size: 14px;
+            border: ${isMe ? 'none' : '1px solid #e0e0e0'};
+            word-break: break-word;
+          `;
+          bubble.innerHTML = `
+            ${m.message}
+            <div style="font-size:10px; margin-top:4px; opacity:0.6; text-align:right;">${m.timestamp}</div>
+          `;
+
+          if (isMe) {
+            // ✅ Delete button only on admin's own messages
+            const delBtn = document.createElement('button');
+            delBtn.className = 'btn-delete';
+            delBtn.title     = 'Delete';
+            delBtn.innerHTML = '<i class="fa-solid fa-trash"></i>';
+            delBtn.onclick   = () => deleteMessage(m.id);
+
+            wrapper.appendChild(bubble);
+            wrapper.appendChild(delBtn);
+          } else {
+            // User messages — no delete button
+            wrapper.appendChild(bubble);
+          }
+
+          box.appendChild(wrapper);
+        });
+
+        box.scrollTop = box.scrollHeight;
+        markAsRead();
+      })
+      .catch(err => console.error('Fetch error:', err));
+  }
+
+  function sendMessage() {
+    const input = document.getElementById('msgInput');
+    const text  = input.value.trim();
+    if (!text) return;
+
+    fetch('/wadmin/ajax/send-message/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        sender_type:   'admin', sender_id:   ADMIN_ID,
+        receiver_type: 'user',  receiver_id: USER_ID,
+        message: text
+      })
+    })
+    .then(r => r.json())
+    .then(data => {
+      if (data.status === 'sent') {
+        input.value = '';
+        fetchMessages();
+      }
+    })
+    .catch(err => console.error('Send error:', err));
+  }
+
+  document.getElementById('msgInput').addEventListener('keydown', e => {
+    if (e.key === 'Enter') sendMessage();
+  });
+
+  markAsRead();
+  fetchMessages();
+  setInterval(fetchMessages, 3000);
+</script>

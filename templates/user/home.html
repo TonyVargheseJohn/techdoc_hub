@@ -1,0 +1,430 @@
+{% include 'user/header.html' %}
+
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+    body {
+        font-family: 'DM Sans', sans-serif;
+        background: #F0F2FF;
+    }
+
+    /* ── WELCOME BANNER ── */
+    .welcome-banner {
+        background: #0D0D1A;
+        border-radius: 24px;
+        padding: 2.8rem 3rem;
+        margin-bottom: 2rem;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 2rem;
+    }
+
+    .welcome-banner::before {
+        content: '';
+        position: absolute;
+        width: 400px; height: 400px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(67,24,255,0.5) 0%, transparent 70%);
+        top: -150px; left: -80px;
+        pointer-events: none;
+    }
+
+    .welcome-banner::after {
+        content: '';
+        position: absolute;
+        width: 300px; height: 300px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(0,212,255,0.2) 0%, transparent 70%);
+        bottom: -100px; right: 20%;
+        pointer-events: none;
+    }
+
+    .banner-grid {
+        position: absolute; inset: 0;
+        background-image: radial-gradient(rgba(255,255,255,0.06) 1px, transparent 1px);
+        background-size: 28px 28px;
+        pointer-events: none;
+    }
+
+    .banner-left { position: relative; z-index: 2; }
+
+    .banner-eyebrow {
+        display: inline-flex; align-items: center; gap: 0.5rem;
+        background: rgba(255,255,255,0.08);
+        border: 1px solid rgba(255,255,255,0.12);
+        color: rgba(255,255,255,0.65);
+        font-size: 0.78rem; font-weight: 600;
+        letter-spacing: 1.2px; text-transform: uppercase;
+        padding: 0.35rem 0.9rem; border-radius: 100px; margin-bottom: 1rem;
+    }
+
+    .banner-eyebrow-dot {
+        width: 6px; height: 6px; border-radius: 50%;
+        background: #00D4FF; box-shadow: 0 0 6px #00D4FF;
+        animation: blink 2s infinite;
+    }
+
+    @keyframes blink {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+    }
+
+    .banner-title {
+        font-family: 'Syne', sans-serif;
+        font-size: clamp(1.7rem, 3vw, 2.4rem);
+        font-weight: 800; color: #fff;
+        letter-spacing: -1px; line-height: 1.1; margin-bottom: 0.6rem;
+    }
+
+    .banner-title span {
+        background: linear-gradient(135deg, #00D4FF, #7B6FFF);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .banner-sub { color: rgba(255,255,255,0.45); font-size: 0.95rem; margin: 0; }
+
+    .banner-stats {
+        position: relative; z-index: 2;
+        display: flex; gap: 1.5rem; flex-shrink: 0;
+    }
+
+    .banner-stat {
+        text-align: center;
+        background: rgba(255,255,255,0.06);
+        border: 1px solid rgba(255,255,255,0.1);
+        border-radius: 16px; padding: 1rem 1.4rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .banner-stat-num {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.5rem; font-weight: 800; color: #fff;
+        line-height: 1; margin-bottom: 4px;
+    }
+
+    .banner-stat-label {
+        font-size: 0.72rem; font-weight: 600;
+        text-transform: uppercase; letter-spacing: 0.8px;
+        color: rgba(255,255,255,0.35);
+    }
+
+    @media (max-width: 767px) {
+        .welcome-banner { flex-direction: column; padding: 2rem 1.5rem; }
+        .banner-stats   { width: 100%; justify-content: center; }
+    }
+
+    /* ── SECTION LABEL ── */
+    .section-label {
+        font-size: 0.75rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 1.5px;
+        color: #9CA3AF; margin-bottom: 1rem;
+        display: flex; align-items: center; gap: 0.5rem;
+    }
+
+    .section-label::after { content: ''; flex: 1; height: 1px; background: #E5E7EB; }
+
+    /* ── DASHBOARD GRID ── */
+    .dashboard-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 1.2rem;
+    }
+
+    /* ── STAT CARD ── */
+    .stat-card {
+        background: white; border-radius: 20px; padding: 2rem 1.8rem;
+        display: flex; flex-direction: column; align-items: flex-start;
+        text-decoration: none; color: inherit;
+        border: 1px solid #EAECF5; position: relative; overflow: hidden;
+        transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+
+    .stat-card::before {
+        content: '';
+        position: absolute; left: 0; top: 16px; bottom: 16px;
+        width: 3px; border-radius: 4px; opacity: 0; transition: opacity 0.3s;
+    }
+
+    .stat-card:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(0,0,0,0.09); border-color: rgba(67,24,255,0.1); }
+    .stat-card:hover::before { opacity: 1; }
+
+    .card-arrow {
+        position: absolute; top: 1.4rem; right: 1.4rem;
+        width: 30px; height: 30px; border-radius: 8px;
+        background: #F4F6FF;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.75rem; color: #9CA3AF; transition: all 0.3s ease;
+    }
+
+    .stat-card:hover .card-arrow { background: #4318FF; color: white; transform: translateX(3px) translateY(-3px); }
+
+    .icon-wrapper {
+        width: 56px; height: 56px; border-radius: 16px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 1.4rem; margin-bottom: 1.4rem; color: white;
+        transition: transform 0.35s ease; flex-shrink: 0;
+    }
+
+    .stat-card:hover .icon-wrapper { transform: scale(1.08) rotate(4deg); }
+
+    .card-title {
+        font-family: 'Syne', sans-serif;
+        font-size: 1.05rem; font-weight: 700; color: #111827;
+        margin-bottom: 0.4rem;
+        display: flex; align-items: center; gap: 6px; flex-wrap: wrap;
+    }
+
+    .card-desc { font-size: 0.85rem; color: #9CA3AF; line-height: 1.6; margin: 0; font-weight: 400; }
+
+    .card-tag {
+        display: inline-block; margin-top: 1.2rem;
+        font-size: 0.72rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.8px;
+        padding: 0.25rem 0.7rem; border-radius: 100px;
+    }
+
+    /* ── Inline card badge ── */
+    .card-live-badge {
+        display: none;
+        background: #ef4444; color: white;
+        font-size: 0.65rem; font-weight: 700;
+        min-width: 18px; height: 18px;
+        border-radius: 100px; padding: 0 5px;
+        align-items: center; justify-content: center;
+        line-height: 1;
+        animation: badgePop 0.3s cubic-bezier(0.68,-0.55,0.27,1.55);
+    }
+
+    @keyframes badgePop {
+        from { transform: scale(0); }
+        to   { transform: scale(1); }
+    }
+
+    /* ── FLOATING CHAT FAB ── */
+    .chat-fab {
+        position: fixed; bottom: 2rem; right: 2rem;
+        width: 58px; height: 58px;
+        background: linear-gradient(135deg, #0084ff, #0060df);
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        color: white; font-size: 1.3rem;
+        box-shadow: 0 8px 25px rgba(0,132,255,0.45);
+        text-decoration: none; z-index: 9999;
+        transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        border: 3px solid white;
+    }
+
+    .chat-fab:hover { transform: scale(1.12) translateY(-3px); box-shadow: 0 12px 35px rgba(0,132,255,0.6); color: white; }
+
+    /* FAB red count (when unread > 0) */
+    .fab-count {
+        display: none;
+        position: absolute; top: -6px; right: -6px;
+        background: #ef4444; color: white;
+        font-size: 0.65rem; font-weight: 700;
+        min-width: 18px; height: 18px;
+        border-radius: 100px; padding: 0 4px;
+        align-items: center; justify-content: center;
+        border: 2px solid white; line-height: 1;
+    }
+
+    /* FAB green dot (when 0 unread) */
+    .fab-green {
+        position: absolute; top: -2px; right: -2px;
+        width: 14px; height: 14px;
+        background: #22c55e; border-radius: 50%; border: 2px solid white;
+        animation: pulse-dot 2s infinite;
+    }
+
+    .chat-fab-tooltip {
+        position: absolute; right: 68px;
+        background: #0D0D1A; color: white;
+        padding: 6px 12px; border-radius: 8px;
+        font-size: 12px; white-space: nowrap;
+        opacity: 0; pointer-events: none;
+        transition: opacity 0.2s ease;
+        font-family: 'DM Sans', sans-serif; font-weight: 500;
+    }
+
+    .chat-fab:hover .chat-fab-tooltip { opacity: 1; }
+
+    @keyframes pulse-dot {
+        0%, 100% { transform: scale(1);   opacity: 1; }
+        50%       { transform: scale(1.3); opacity: 0.7; }
+    }
+</style>
+
+<!-- Welcome Banner -->
+<div class="welcome-banner mb-4">
+    <div class="banner-grid"></div>
+    <div class="banner-left">
+        <div class="banner-eyebrow">
+            <span class="banner-eyebrow-dot"></span>
+            TechDoc Hub — User Dashboard
+        </div>
+        <h1 class="banner-title">Good to see you,<br><span>{{ user.name }}.</span></h1>
+        <p class="banner-sub">Access your documents, machines, and team tools below.</p>
+    </div>
+    <div class="banner-stats">
+        <div class="banner-stat">
+            <div class="banner-stat-num">5</div>
+            <div class="banner-stat-label">Modules</div>
+        </div>
+        <div class="banner-stat">
+            <div class="banner-stat-num" style="background: linear-gradient(135deg,#00D4FF,#4318FF); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;">24/7</div>
+            <div class="banner-stat-label">Access</div>
+        </div>
+    </div>
+</div>
+
+<!-- Section Label -->
+<div class="section-label mb-3">Quick Access</div>
+
+<!-- Cards -->
+<div class="dashboard-grid">
+
+    <!-- Machines -->
+    <a href="{% url 'webuser:viewmachine' %}" class="stat-card">
+        <style>.stat-card:nth-child(1)::before { background: #10b981; }</style>
+        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="icon-wrapper" style="background: linear-gradient(135deg, #10b981, #059669); box-shadow: 0 8px 20px rgba(16,185,129,0.28);">
+            <i class="fa-solid fa-gears"></i>
+        </div>
+        <div class="card-title">View Machines</div>
+        <p class="card-desc">Browse technical documentation, machine manuals, and software variants.</p>
+        <span class="card-tag" style="background: rgba(16,185,129,0.1); color: #059669;">Documentation</span>
+    </a>
+
+    <!-- Uploads -->
+    <a href="{% url 'webuser:my_uploads' %}" class="stat-card">
+        <style>.stat-card:nth-child(2)::before { background: #4318FF; }</style>
+        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="icon-wrapper" style="background: linear-gradient(135deg, #4318FF, #2563eb); box-shadow: 0 8px 20px rgba(67,24,255,0.28);">
+            <i class="fa-solid fa-cloud-arrow-up"></i>
+        </div>
+        <div class="card-title">My Uploads</div>
+        <p class="card-desc">Manage files you have uploaded for machines or software configurations.</p>
+        <span class="card-tag" style="background: rgba(67,24,255,0.08); color: #4318FF;">File Manager</span>
+    </a>
+
+    <!-- ✅ Announcements with live unread count badge -->
+    <a href="{% url 'webuser:viewannouncement' %}" class="stat-card">
+        <style>.stat-card:nth-child(3)::before { background: #f59e0b; }</style>
+        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="icon-wrapper" style="background: linear-gradient(135deg, #f59e0b, #d97706); box-shadow: 0 8px 20px rgba(245,158,11,0.28);">
+            <i class="fa-solid fa-bullhorn"></i>
+        </div>
+        <div class="card-title">
+            Announcements
+            <span id="ann-card-badge" class="card-live-badge"></span>
+        </div>
+        <p class="card-desc">Stay updated on new technical documents and system notices from admins.</p>
+        <span class="card-tag" style="background: rgba(245,158,11,0.1); color: #b45309;">Notices</span>
+    </a>
+
+    <!-- Notifications -->
+    <a href="{% url 'webuser:notifications' %}" class="stat-card">
+        <style>.stat-card:nth-child(4)::before { background: #8b5cf6; }</style>
+        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="icon-wrapper" style="background: linear-gradient(135deg, #8b5cf6, #7c3aed); box-shadow: 0 8px 20px rgba(139,92,246,0.28);">
+            <i class="fa-solid fa-bell"></i>
+        </div>
+        <div class="card-title">Notifications</div>
+        <p class="card-desc">View latest alerts, file deletion reasons, and admin messages.</p>
+        <span class="card-tag" style="background: rgba(139,92,246,0.1); color: #7c3aed;">Alerts</span>
+    </a>
+
+    <!-- ✅ Live Chat with unread count badge -->
+    <a href="{% url 'webuser:user_chat' %}" class="stat-card">
+        <style>.stat-card:nth-child(5)::before { background: #0084ff; }</style>
+        <div class="card-arrow"><i class="fa-solid fa-arrow-right"></i></div>
+        <div class="icon-wrapper" style="background: linear-gradient(135deg, #0084ff, #0060df); box-shadow: 0 8px 20px rgba(0,132,255,0.28);">
+            <i class="fa-solid fa-comments"></i>
+        </div>
+        <div class="card-title">
+            Live Chat
+            <!-- green pulse dot -->
+            <span style="display:inline-block; width:7px; height:7px; background:#22c55e; border-radius:50%; margin-left:2px; vertical-align:middle; animation: pulse-dot 2s infinite;"></span>
+            <!-- ✅ red unread count badge -->
+            <span id="chat-card-badge" class="card-live-badge"></span>
+        </div>
+        <p class="card-desc">Chat directly with our support admin in real time. Get instant help.</p>
+        <span class="card-tag" style="background: rgba(0,132,255,0.1); color: #0060df;">Support Chat</span>
+    </a>
+
+</div>
+
+<!-- ✅ Floating Chat FAB with live count -->
+<a href="{% url 'webuser:user_chat' %}" class="chat-fab" title="Chat with Support">
+    <i class="fa-solid fa-comments"></i>
+    <span id="fab-count"  class="fab-count"></span>
+    <span id="fab-green"  class="fab-green"></span>
+    <span class="chat-fab-tooltip">Chat with Support</span>
+</a>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // ✅ Chat unread count — updates card badge + FAB
+    function checkChatUnread() {
+        fetch('/user/ajax/unread-count/')
+            .then(r => r.json())
+            .then(data => {
+                const count     = data.unread_count || 0;
+                const label     = count > 99 ? '99+' : count;
+
+                // Card badge
+                const cardBadge = document.getElementById('chat-card-badge');
+                if (count > 0) {
+                    cardBadge.textContent   = label;
+                    cardBadge.style.display = 'inline-flex';
+                } else {
+                    cardBadge.style.display = 'none';
+                }
+
+                // FAB — red count OR green dot
+                const fabCount = document.getElementById('fab-count');
+                const fabGreen = document.getElementById('fab-green');
+                if (count > 0) {
+                    fabCount.textContent   = label;
+                    fabCount.style.display = 'inline-flex';
+                    fabGreen.style.display = 'none';
+                } else {
+                    fabCount.style.display = 'none';
+                    fabGreen.style.display = 'block';
+                }
+            })
+            .catch(() => {});
+    }
+
+    // ✅ Announcement unread count — updates card badge
+    function checkAnnouncements() {
+        fetch('/user/ajax/announcement-count/')
+            .then(r => r.json())
+            .then(data => {
+                const count    = data.count || 0;
+                const annBadge = document.getElementById('ann-card-badge');
+                if (count > 0) {
+                    annBadge.textContent   = count > 99 ? '99+' : count;
+                    annBadge.style.display = 'inline-flex';
+                } else {
+                    annBadge.style.display = 'none';
+                }
+            })
+            .catch(() => {});
+    }
+
+    // Run on load
+    checkChatUnread();
+    checkAnnouncements();
+
+    // Poll every few seconds
+    setInterval(checkChatUnread,    3000);
+    setInterval(checkAnnouncements, 5000);
+</script>

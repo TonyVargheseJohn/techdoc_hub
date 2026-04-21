@@ -63,7 +63,7 @@ def home(request):
         'active_announcements': active_announcements,
     }
     
-    return render(request, "admin/Home.html", context)
+    return render(request, "admin/home.html", context)
 
 
 
@@ -78,7 +78,7 @@ def myprofile(request):
     except Admin.DoesNotExist:
         return redirect('guest:login')  # admin not found
 
-    return render(request, "admin/Myprofile.html", {'data': data})
+    return render(request, "admin/myprofile.html", {'data': data})
 
 
 
@@ -114,7 +114,7 @@ def editprofile(request):
         messages.success(request, "Profile updated successfully")
         return redirect("wadmin:myprofile")
 
-    return render(request, "admin/Editprofile.html", {'data': data})
+    return render(request, "admin/editprofile.html", {'data': data})
 
 
 def changepassword(request):
@@ -179,7 +179,7 @@ def addcategory(request):
 
         return redirect("wadmin:addcategory")
 
-    return render(request, "admin/AddMachineCategory.html", {
+    return render(request, "admin/addmachinecategory.html", {
         'categories': categorydata
     })
 
@@ -197,7 +197,7 @@ def editcategory(request, eid):
 
         return redirect("wadmin:addcategory")
 
-    return render(request, "admin/AddMachineCategory.html", {
+    return render(request, "admin/addmachinecategory.html", {
         "cat": category
     })
 
@@ -268,7 +268,7 @@ def machine(request):
         messages.success(request, "Machine added successfully")
         return redirect("wadmin:machine")
 
-    return render(request, "admin/AddMachine.html", {
+    return render(request, "admin/addmachine.html", {
         "data": machinedata,
         "category": categorydata
     })
@@ -306,7 +306,7 @@ def editmachine(request, eid):
     data = Machine.objects.all()
     category = MachineCategory.objects.all()
 
-    return render(request, "admin/AddMachine.html", {
+    return render(request, "admin/addmachine.html", {
         "machine": machine,
         "data": data,
         "category": category
@@ -351,7 +351,7 @@ def announcement(request):
             # Redirect to the same page to clear the form and prevent re-submission
             return redirect("wadmin:announcement")
 
-    return render(request, "Admin/AddAnnouncement.html", {
+    return render(request, "admin/addannouncement.html", {
         'data': announcementdata
     })
 
@@ -373,7 +373,7 @@ def editannouncement(request, eid):
         return redirect("wadmin:announcement")
 
     else:
-        return render(request, "Admin/AddAnnouncement.html", {
+        return render(request, "admin/addannouncement.html", {
             "announcement": announcement,
             "data": announcementdata
         })
@@ -386,7 +386,7 @@ def deleteannouncement(request, did):
 
 def newusers(request):
     data = User.objects.filter(status='pending')
-    return render(request, "admin/NewUsers.html", {'data': data})
+    return render(request, "admin/newusers.html", {'data': data})
 
 
 
@@ -459,12 +459,12 @@ TechDocHub Team
 
         return redirect("wadmin:newusers")
 
-    return render(request,"admin/RejectUser.html",{"user":user})
+    return render(request,"admin/rejectuser.html",{"user":user})
 
 
 def acceptedusers(request):
     data = User.objects.filter(status='accepted')
-    return render(request, "admin/AcceptedUsers.html", {'data': data})
+    return render(request, "admin/acceptedusers.html", {'data': data})
 
 
 
@@ -472,7 +472,7 @@ def acceptedusers(request):
 
 def rejectedusers(request):
     data = User.objects.filter(status='rejected')
-    return render(request, "admin/RejectedUsers.html", {'data': data})
+    return render(request, "admin/rejectedusers.html", {'data': data})
 
 
 
@@ -493,7 +493,7 @@ def view_uploaded_files(request):
         "files": files
     }
 
-    return render(request, "admin/ViewUploads.html", context)
+    return render(request, "admin/viewuploads.html", context)
 
 
 

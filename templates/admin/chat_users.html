@@ -1,0 +1,84 @@
+{% include "admin/header.html" %}
+
+<div style="padding: 24px;">
+  <h4 style="margin-bottom: 20px;">💬 Chat with Users</h4>
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px;">
+    {% for user in users %}
+    <div style="background: #fff; border: 1px solid #e0e0e0; border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.05); position: relative;">
+
+      <!-- Photo -->
+      <img src="/media/{{ user.photo }}" alt="photo"
+           style="width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid #0084ff; flex-shrink:0;">
+
+      <!-- Name & Email -->
+      <div style="flex: 1; min-width:0;">
+        <div style="font-weight: 600; font-size: 15px;">{{ user.name }}</div>
+        <div style="font-size: 12px; color: #888; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{ user.email }}</div>
+        <!-- ✅ New messages text — shows only when unread > 0 -->
+        <div id="unread-text-{{ user.id }}"
+             style="font-size:11px; color:#ef4444; font-weight:600; margin-top:3px; display:none;">
+          ● New messages
+        </div>
+      </div>
+
+      <!-- Chat button + unread count badge -->
+      <div style="position:relative; flex-shrink:0;">
+        <a href="{% url 'wadmin:admin_chat' user.id %}"
+           style="background: #0084ff; color: white; padding: 7px 14px; border-radius: 8px; text-decoration: none; font-size: 13px; display:inline-block;">
+          Chat
+        </a>
+        <!-- ✅ Red badge — shows unread count -->
+        <span id="badge-{{ user.id }}"
+              style="display:none;
+                     position:absolute; top:-8px; right:-8px;
+                     background:#ef4444; color:white;
+                     font-size:10px; font-weight:700;
+                     min-width:18px; height:18px;
+                     border-radius:50%; border:2px solid white;
+                     align-items:center; justify-content:center;
+                     padding: 0 3px; line-height:1;">
+        </span>
+      </div>
+
+    </div>
+    {% empty %}
+    <p style="color: #888;">No accepted users found.</p>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+  const ADMIN_ID = {{ request.session.aid|default:1 }};
+
+  const users = [
+    {% for user in users %}{ id: {{ user.id }} },{% endfor %}
+  ];
+
+  function fetchUnreadCounts() {
+    users.forEach(u => {
+      fetch(`/wadmin/ajax/get-messages/?admin_id=${ADMIN_ID}&user_id=${u.id}`)
+        .then(r => r.json())
+        .then(data => {
+          // ✅ Use unread_count returned by get_messages_admin view
+          const unread = data.unread_count || 0;
+
+          const badge = document.getElementById('badge-' + u.id);
+          const text  = document.getElementById('unread-text-' + u.id);
+
+          if (unread > 0) {
+            badge.textContent   = unread > 99 ? '99+' : unread;
+            badge.style.display = 'inline-flex';
+            text.style.display  = 'block';
+          } else {
+            badge.style.display = 'none';
+            text.style.display  = 'none';
+          }
+        })
+        .catch(err => console.error('Badge error:', err));
+    });
+  }
+
+  // Run on load and every 3 seconds
+  fetchUnreadCounts();
+  setInterval(fetchUnreadCounts, 3000);
+</script>
